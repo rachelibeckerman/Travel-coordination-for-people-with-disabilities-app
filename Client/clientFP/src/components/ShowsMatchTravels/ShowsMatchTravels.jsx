@@ -69,7 +69,7 @@ function ShowsMatchTravels(props) {
             </>
         )
     }
-    const SendJoinReqForDriver = async(travelDriverId) => {
+    const SendJoinReqForDriver = async (travelDriverId) => {
         
         const communicationObj = {
             travelPassengerId : originTravel.travelId,
@@ -79,8 +79,8 @@ function ShowsMatchTravels(props) {
         try{
             const response = await post(`${URL}/communications`,JSON.stringify(communicationObj));
             console.log("response communications" ,response)
+            console.log("passenger_join" ,{room : travelDriverId ,msg: response.data})
             socket.emit('passenger_join',{room : travelDriverId ,msg: response.data})
-            
         }
         catch(err){
             console.log(`ERROR ${err}`);
@@ -88,6 +88,7 @@ function ShowsMatchTravels(props) {
        //       
         return
     }
+
     const listTemplate = (travel) => {
         keyCounter++;
         return (
@@ -98,14 +99,14 @@ function ShowsMatchTravels(props) {
 
                 <div>Tryout starts at: {travel.date}</div>
                 <div>Amount of additional places: {travel.additionalSeats}</div>
-                <button onClick={SendJoinReqForDriver(travel.id)}>Send join  request for driver</button>
+                <button onClick={()=>SendJoinReqForDriver(travel.id)}>Send join request for driver</button>
             </div>
         );
     };
     
     return (
         <>
-            <DataView key={keyCounter} value={matchTravels} itemTemplate={listTemplate} header={header()}/>
+            <DataView key={keyCounter} value={matchTravels} itemTemplate={listTemplate} header={header()} />
         </>
     );
 }

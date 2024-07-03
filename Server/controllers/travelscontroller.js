@@ -17,8 +17,8 @@ export class TravelsController {
             err.statusCode = 500;
             err.message = ex;
             next(err)
-        }llllllllll
-    }hhhhhhhhhhhhhh
+        }
+    }
 
     async getTravels(req, res, next) {
         try {

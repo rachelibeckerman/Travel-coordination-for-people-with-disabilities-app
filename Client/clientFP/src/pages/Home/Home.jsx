@@ -57,7 +57,6 @@ function Home({socket}) {
         socket.emit('join_room', { room: params.travelId });
         socket.on('passenger_joined', (data) => {
             console.log("passenger_joined " ,data)
-
             setTravelsToConfirm([...travelsToConfirm, data]);
         })
     }

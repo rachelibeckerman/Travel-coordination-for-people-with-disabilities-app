@@ -14,8 +14,8 @@ function ShowTravelsToConfirm({ travels, geocodeAddress }) {
     useEffect(() => {
         fetchData();
     }, [])
-    
-    
+
+
     async function fetchData() {
         let temp = [];
         try {
@@ -25,7 +25,6 @@ function ShowTravelsToConfirm({ travels, geocodeAddress }) {
                 const response = await get(fullURL);
                 for (let i = 0; i < response.data.length; i++) {
                     const [passengerStart, passengerDestination] = await geocodeAddress(response.data[i].passengerTravel.startPoint, response.data[i].passengerTravel.destinationPoint);
-
                     const [driverStart, driverDestination] = await geocodeAddress(response.data[i].driverTravel.startPoint, response.data[i].driverTravel.destinationPoint);
                     response.data[i].passengerTravel = { ...response.data[i].passengerTravel, startLocationTxt: passengerStart, destinationLocationTxt: passengerDestination };
                     response.data[i].driverTravel = { ...response.data[i].passengerTravel, startLocationTxt: driverStart, destinationLocationTxt: driverDestination };
@@ -40,6 +39,7 @@ function ShowTravelsToConfirm({ travels, geocodeAddress }) {
     const handleConfirm = async (communication) => {
         try {
             const response = await put(`${URL}/communications/${communication.id}`, JSON.stringify({ status: 2 }));
+            socket.io('confirm_travel', { room: response.travelDriverId, confirmTo: response.travelPassengerId })
             fetchData();
             console.log(response);
         } catch (err) {

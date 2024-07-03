@@ -26,17 +26,19 @@ export class CommunicationsService {
         return result;
     }
 
-    async getCommunication(params) {
+    async getCommunicationByParams(params) {
+        console.log("getCommunication in CommunicationsService")
         const queryItems = getByParamsQuery('communication', params);
-
         const communication = await executeQuery(queryItems, Object.values(params))
 
         const travelService = new TravelService()
         const passengerTravel = await travelService.getTravels({ id: communication[0].travelPassengerId })
         const driverTravel = await travelService.getTravels({ id: communication[0].travelDriverId })
         return { passengerTravel, driverTravel, id: communication[0].id };
-    }
+    };
+
     async getCommunications(query) {
+        console.log("getCommunications in CommunicationsService")
         const queryItems = getByParamsQuery('communication', query);
         const communications = await executeQuery(queryItems, Object.values(query))
         const travelService = new TravelService()

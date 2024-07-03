@@ -33,11 +33,17 @@ export class CommunicationsController {
         }
     }
 
-    async getCommunicationById(req, res, next) {
+    async getCommunicationByParams(req, res, next) {
+        console.log("getCommunicationById in CommunicationsController")
         console.log(req.params.id)
         try {
             const communicationsService = new CommunicationsService();
-            const resultItem = await communicationsService.getCommunication({ id: req.params.id });
+            console.log("req.body")
+            console.log(req.query)
+            console.log(req.query.length)
+            const resultItem = Object.keys(req.query).length != 0 ?
+                await communicationsService.getCommunicationByParams(req.query) :
+                await communicationsService.getCommunicationByParams({ id: req.params.id });
             res.json({ status: 200, data: resultItem });
         }
         catch (ex) {
@@ -49,9 +55,10 @@ export class CommunicationsController {
     }
 
     async getCommunications(req, res, next) {
+        console.log("getCommunications in CommunicationsController")
         try {
             const communicationsService = new CommunicationsService();
-            //const resultItems = Object.keys(req.query).length != 0 ? await commentService.getByParams('comments', req.query) : await commentService.getAll('comments')
+            //const resultItems = await commentService.getByParams('comments', req.query) : await commentService.getAll('comments')
             const resultItems = await communicationsService.getCommunications(req.query);
             res.status(200).json({ status: 200, data: resultItems });
         }
@@ -62,4 +69,5 @@ export class CommunicationsController {
             next(err)
         }
     }
+
 }

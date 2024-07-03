@@ -6,8 +6,8 @@ const communicationsController = new CommunicationsController();
 
 communicationsRouter.post("/", communicationsController.addCommunication);
 communicationsRouter.put("/:id", communicationsController.updateCommunication);
-communicationsRouter.get("/:id", communicationsController.getCommunicationById)
-communicationsRouter.get("/", communicationsController.getCommunications)
+communicationsRouter.get("/:id", communicationsController.getCommunicationByParams);
+communicationsRouter.get("/", communicationsController.getCommunications);
 
 
 export {
