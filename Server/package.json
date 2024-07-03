@@ -1,0 +1,32 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon app.js ",
+    "socket": "nodemon socket.js"
+
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@googlemaps/google-maps-services-js": "^3.4.0",
+    "axios": "^1.7.2",
+    "core-js": "^3.37.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "js-sha256": "^0.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "max-safe-integer": "^2.0.0",
+    "mysql2": "^3.9.7",
+    "nodemon": "^3.1.0",
+    "number": "^0.0.1",
+    "require": "^2.4.20",
+    "sha256": "^0.2.0",
+    "socket.io": "^4.7.5"
+  }
+}

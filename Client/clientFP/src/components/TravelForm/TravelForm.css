@@ -1,0 +1,29 @@
+button{
+    color: black;
+}
+
+.p-dialog .p-dialog-header .p-dialog .p-dialog-header .p-dialog-header-icon {
+    width: auto;
+    background-color: #1a1a1a;
+    
+  }
+  button{
+    color: #1a1a1a;
+    background-color: aquamarine;
+  }
+  .p-datepicker .p-datepicker-header .p-datepicker-prev, .p-datepicker .p-datepicker-header .p-datepicker-next, .p-datepicker .p-timepicker button{
+ 
+   width: 50px;
+  }
+  
+
+  #Dialog .pac-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10; /* ודא שהרשימה תהיה מעל כל תוכן אחר ב-Dialog */
+  }
+
+  #autocomplete {
+    position: relative;
+  }

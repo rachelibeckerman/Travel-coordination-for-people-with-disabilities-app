@@ -1,0 +1,31 @@
+
+/* .p-dialog-header-close{
+    color: black;
+} */
+
+#Dialog{
+    width: auto;
+    
+ }
+ .p-inputtext {
+     margin: 10px;
+ }
+ 
+   button{
+     color: #1a1a1a;
+     background-color: aquamarine;
+   }
+ 
+ 
+   .p-dialog .p-dialog-header .p-dialog-header-close {
+     width: 50px;
+     /* background-color: #1a1a1a; */
+     display: flex;
+     align-items: center;
+    
+   }
+   /* .p-dialog .p-dialog-content{
+   opacity: 0.2;
+   } */
+
+   

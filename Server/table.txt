@@ -1,0 +1,119 @@
+/* create users table */
+CREATE TABLE `fproject_db`.`users` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(45) NOT NULL,
+  `firstName` VARCHAR(45) NOT NULL,
+  `lastName` VARCHAR(45) NOT NULL,
+  `phone` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE);
+
+
+
+
+
+/*data for users table */
+INSERT INTO `fproject_db`.`users` (`id`, `username`, `firstName`, `lastName`, `phone`, `email`) VALUES ('2', 'adina', 'adina', 'columbus', '0556749105', 'adina@gmail.com');
+INSERT INTO `fproject_db`.`users` (`id`, `username`, `firstName`, `lastName`, `phone`, `email`) VALUES ('1', 'rachel', 'rachel', 'beckerman', '0533160718', 'rachel@gmail.com');
+
+
+/*create passwords table*/
+  CREATE TABLE `fproject_db`.`passwords` (
+  `username` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC),
+  CONSTRAINT `usernameK`
+    FOREIGN KEY (`username`)
+    REFERENCES `fproject_db`.`users` (`username`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);
+
+
+ALTER TABLE `fproject_db`.`passwords` 
+ADD UNIQUE INDEX `password_UNIQUE` (`password` ASC) VISIBLE;
+;
+
+
+/*data for password table*/
+INSERT INTO `fproject_db`.`passwords` (`username`, `password`) VALUES ('adina', '1234');
+INSERT INTO `fproject_db`.`passwords` (`username`, `password`) VALUES ('rachel', '5678');
+
+
+//travels create
+
+CREATE TABLE `fproject_db`.`travels` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `userId` INT NOT NULL,
+  `date` DATETIME NOT NULL,
+  `startPointId` INT NOT NULL,
+  `destinationPointId` INT NOT NULL,
+  `additionalSeats` INT NULL,
+  `isAvailable` TINYINT NOT NULL DEFAULT 0,
+  `userType` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
+  INDEX `userId_idx` (`userId` ASC) VISIBLE,
+  CONSTRAINT `userId`
+    FOREIGN KEY (`userId`)
+    REFERENCES `fproject_db`.`users` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+
+//create location table
+
+CREATE TABLE `fproject_db`.`location` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `lat` DOUBLE NOT NULL,
+  `lng` DOUBLE NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+  ALTER TABLE `fproject_db`.`travels` 
+ADD INDEX `pointstart_idx` (`startPoint` ASC) VISIBLE,
+ADD INDEX `poinstdestination_idx` (`destinationPointId` ASC) VISIBLE;
+
+;
+ALTER TABLE `fproject_db`.`travels` 
+ADD CONSTRAINT `pointstart`
+  FOREIGN KEY (`startPoint`)
+  REFERENCES `fproject_db`.`location` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `poinstdestination`
+  FOREIGN KEY (`destinationPointId`)
+  REFERENCES `fproject_db`.`location` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+
+
+//create communication table
+
+CREATE TABLE `fproject_db`.`communication` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `travelDriverId` INT NOT NULL,
+  `travelPassengerId` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
+  INDEX `driverId_idx` (`travelDriverId` ASC) VISIBLE,
+  INDEX `travelpassengerId_idx` (`travelPassengerId` ASC) VISIBLE,
+  CONSTRAINT `traveldriverId`
+    FOREIGN KEY (`travelDriverId`)
+    REFERENCES `fproject_db`.`travels` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `travelpassengerId`
+    FOREIGN KEY (`travelPassengerId`)
+    REFERENCES `fproject_db`.`travels` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+
+
+
+
+// C:\Program Files\MySQL\MySQL Workbench 8.0

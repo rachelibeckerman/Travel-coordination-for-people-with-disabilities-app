@@ -1,0 +1,59 @@
+{/* <div>
+            <h1>Your Travels</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>FROM</th>
+                        <th>TO</th>
+                        <th>DATE</th>
+                        <th>SEATS</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {userTravels.map((travel, index) => (
+                        <tr key={index}>
+                            <td>{travel.startLocationTxt}</td>
+                            <td>{travel.destinationLocationTxt}</td>
+                            <td>{travel.date}</td>
+                            <td>{travel.seats}</td>
+                            <td>
+                                <Button icon="pi pi-pencil" className="p-button-rounded p-button-info" onClick={() => seteditTravels(travel.id)} />
+                                <Button icon="pi pi-trash" className="p-button-rounded p-button-danger" onClick={() => deleteTravel(travel.id)} />
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div> */}
+
+
+
+========================================================================================================
+
+ {/* <div className='travelItem'>
+                <Button icon="pi pi-trash" className="p-button-rounded p-button-danger" onClick={() => deleteTravel(travel.id)} />
+                <Button icon="pi pi-pencil" className="p-button-rounded p-button-info" />
+            
+                {/* <button icon="pi pi-check" onClick={() => deleteTravel(travel.id)}>x</button>
+                <button onClick={() => deleteTravel(travel.id)}>🖊</button>  </div> */}
+                   {/* <div className="p-col-12 p-md-4">
+                <div className="travel-item">
+                    <div className="travel-item-header">
+                        <h3>{travel.startLocationTxt} to {travel.destinationLocationTxt}</h3>
+                    </div>
+                    <div className="travel-item-content">
+                        <p><strong>Date:</strong> {travel.date}</p>
+                        <p><strong>Seats:</strong> {travel.seats}</p>
+                    </div>
+                    <div className="travel-item-footer">
+                        <Button icon="pi pi-pencil" className="p-button-rounded p-button-info" onClick={() => alert(`Update ${travel.id}`)} />
+                        <Button icon="pi pi-trash" className="p-button-rounded p-button-danger" onClick={() => deleteTravel(travel.id)} />
+                    </div>
+                </div>
+            </div> */}
+
+
+================================================================================================================================
+
+
