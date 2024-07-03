@@ -1,5 +1,5 @@
 import { executeQuery } from '../dataAccess/db.js';
-import { getByParamsQuery, addItemQuery,updateItemQuery } from '../dataAccess/query.js'
+import { getByParamsQuery, addItemQuery, updateItemQuery } from '../dataAccess/query.js'
 import { TravelService } from './travelService.js';
 
 export class CommunicationsService {
@@ -10,16 +10,19 @@ export class CommunicationsService {
         const result = await executeQuery(queryItems, Object.values(params))
         return result;
     }
+
     async updateCommunication(id, updateItem) {
         console.log(updateItem.status)
-        if (updateItem.status == '2') {
-            const [communication] = await this.getCommunication({ id });
+        if (updateItem.status == 2) {
+            console.log("i insert if")
+            const { passengerTravel , driverTravel , id} = await this.getCommunicationByParams({ id });
+            console.log("communication", driverTravel[0])
             const paramsQuery = {
                 params: { status: 3 },
-                whereParams: { travelDriverId: communication.travelDriverId }
+                whereParams: { travelDriverId: driverTravel[0].id }
             }
             const queryItems = updateItemQuery('communication', paramsQuery);
-            await executeQuery(queryItems, ['3', communication.travelDriverId])
+            await executeQuery(queryItems, ['3', driverTravel[0].id])
         }
         const queryItems = updateItemQuery('communication', { params: updateItem, whereParams: { id } });
         const result = await executeQuery(queryItems, [...Object.values(updateItem), id])
