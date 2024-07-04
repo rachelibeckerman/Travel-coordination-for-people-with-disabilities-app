@@ -54,6 +54,7 @@ function Home({ socket }) {
 
 
     const handleSearch = (params) => {
+        console.log("params---------- "+JSON.stringify(params))
         setVisibleSearch(false);
         setOriginTravel(params);
         setShowsMatchTravels(true)

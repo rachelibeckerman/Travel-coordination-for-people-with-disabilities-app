@@ -1,119 +1,60 @@
-/* create users table */
-CREATE TABLE `fproject_db`.`users` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(45) NOT NULL,
-  `firstName` VARCHAR(45) NOT NULL,
-  `lastName` VARCHAR(45) NOT NULL,
-  `phone` VARCHAR(45) NOT NULL,
-  `email` VARCHAR(45) NOT NULL,
+CREATE TABLE `communication` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `travelDriverId` int NOT NULL,
+  `travelPassengerId` int NOT NULL,
+  `status` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE);
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `travelDriverId_idx` (`travelDriverId`),
+  KEY `travelPassengerId_idx` (`travelPassengerId`),
+  KEY `status_idx` (`status`),
+  CONSTRAINT `status` FOREIGN KEY (`status`) REFERENCES `status` (`id`),
+  CONSTRAINT `travelDriverId` FOREIGN KEY (`travelDriverId`) REFERENCES `travels` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `travelPassengerId` FOREIGN KEY (`travelPassengerId`) REFERENCES `travels` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE `passwords` (
+  `username` varchar(45) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  UNIQUE KEY `username_UNIQUE` (`username`),
+  UNIQUE KEY `password_UNIQUE` (`password`),
+  CONSTRAINT `usernameK` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-
-
-
-/*data for users table */
-INSERT INTO `fproject_db`.`users` (`id`, `username`, `firstName`, `lastName`, `phone`, `email`) VALUES ('2', 'adina', 'adina', 'columbus', '0556749105', 'adina@gmail.com');
-INSERT INTO `fproject_db`.`users` (`id`, `username`, `firstName`, `lastName`, `phone`, `email`) VALUES ('1', 'rachel', 'rachel', 'beckerman', '0533160718', 'rachel@gmail.com');
-
-
-/*create passwords table*/
-  CREATE TABLE `fproject_db`.`passwords` (
-  `username` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(255) NOT NULL,
-  UNIQUE INDEX `username_UNIQUE` (`username` ASC),
-  CONSTRAINT `usernameK`
-    FOREIGN KEY (`username`)
-    REFERENCES `fproject_db`.`users` (`username`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION);
-
-
-ALTER TABLE `fproject_db`.`passwords` 
-ADD UNIQUE INDEX `password_UNIQUE` (`password` ASC) VISIBLE;
-;
-
-
-/*data for password table*/
-INSERT INTO `fproject_db`.`passwords` (`username`, `password`) VALUES ('adina', '1234');
-INSERT INTO `fproject_db`.`passwords` (`username`, `password`) VALUES ('rachel', '5678');
-
-
-//travels create
-
-CREATE TABLE `fproject_db`.`travels` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `userId` INT NOT NULL,
-  `date` DATETIME NOT NULL,
-  `startPointId` INT NOT NULL,
-  `destinationPointId` INT NOT NULL,
-  `additionalSeats` INT NULL,
-  `isAvailable` TINYINT NOT NULL DEFAULT 0,
-  `userType` VARCHAR(45) NOT NULL,
+CREATE TABLE `status` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-  INDEX `userId_idx` (`userId` ASC) VISIBLE,
-  CONSTRAINT `userId`
-    FOREIGN KEY (`userId`)
-    REFERENCES `fproject_db`.`users` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+  UNIQUE KEY `name_UNIQUE` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-
-
-//create location table
-
-CREATE TABLE `fproject_db`.`location` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `lat` DOUBLE NOT NULL,
-  `lng` DOUBLE NOT NULL,
+CREATE TABLE `travels` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `userId` int NOT NULL,
+  `date` datetime NOT NULL,
+  `startPoint` point NOT NULL,
+  `destinationPoint` point NOT NULL,
+  `additionalSeats` int DEFAULT NULL,
+  `isAvailable` tinyint NOT NULL DEFAULT '0',
+  `userType` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
-  ALTER TABLE `fproject_db`.`travels` 
-ADD INDEX `pointstart_idx` (`startPoint` ASC) VISIBLE,
-ADD INDEX `poinstdestination_idx` (`destinationPointId` ASC) VISIBLE;
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `userId_idx` (`userId`),
+  CONSTRAINT `userId` FOREIGN KEY (`userId`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=184 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-;
-ALTER TABLE `fproject_db`.`travels` 
-ADD CONSTRAINT `pointstart`
-  FOREIGN KEY (`startPoint`)
-  REFERENCES `fproject_db`.`location` (`id`)
-  ON DELETE NO ACTION
-  ON UPDATE NO ACTION,
-ADD CONSTRAINT `poinstdestination`
-  FOREIGN KEY (`destinationPointId`)
-  REFERENCES `fproject_db`.`location` (`id`)
-  ON DELETE NO ACTION
-  ON UPDATE NO ACTION;
-
-
-
-//create communication table
-
-CREATE TABLE `fproject_db`.`communication` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `travelDriverId` INT NOT NULL,
-  `travelPassengerId` INT NOT NULL,
+CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(45) NOT NULL,
+  `firstName` varchar(45) NOT NULL,
+  `lastName` varchar(45) NOT NULL,
+  `phone` varchar(45) NOT NULL,
+  `email` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-  INDEX `driverId_idx` (`travelDriverId` ASC) VISIBLE,
-  INDEX `travelpassengerId_idx` (`travelPassengerId` ASC) VISIBLE,
-  CONSTRAINT `traveldriverId`
-    FOREIGN KEY (`travelDriverId`)
-    REFERENCES `fproject_db`.`travels` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `travelpassengerId`
-    FOREIGN KEY (`travelPassengerId`)
-    REFERENCES `fproject_db`.`travels` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `username_UNIQUE` (`username`),
+  UNIQUE KEY `email_UNIQUE` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-
-
-
-
-// C:\Program Files\MySQL\MySQL Workbench 8.0
+C:\Program Files\MySQL\MySQL Workbench 8.0

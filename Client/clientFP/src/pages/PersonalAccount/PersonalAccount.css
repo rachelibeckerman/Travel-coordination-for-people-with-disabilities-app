@@ -140,7 +140,7 @@ tbody td:last-child {
 
 
 .travelItem {
-    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    background: linear-gradient(135deg, #f5f7fa, #ffffff);
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
@@ -181,19 +181,33 @@ tbody td:last-child {
 }
 
 .p-button-info {
-    background-color: #007bff;
-    border: none;
+    /* background-color: #007bff; */
+    border: solid 2px #007bff;
+    /* border: none; */
 }
 
 .p-button-info:hover {
-    background-color: #0056b3;
+    background-color: rgba(81, 109, 139, 0.746);
+    border: solid 2px #007bff;
 }
 
 .p-button-danger {
-    background-color: #dc3545;
-    border: none;
+    /* background-color: #dc3545; */
+    border: solid 2px #dc3545;
+    /* border: none; */
 }
 
 .p-button-danger:hover {
-    background-color: #c82333;
+    background-color: #e8727eba;
+    border: solid 2px #dc3545;
+}
+.p-button-search {
+    /* background-color: #dc3545; */
+    border: solid 2px #dcd135;
+    /* border: none; */
+}
+
+.p-button-search:hover {
+    background-color: rgba(240, 233, 98, 0.729);
+    border: solid 2px #dcd135;
 }

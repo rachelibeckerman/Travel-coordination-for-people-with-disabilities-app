@@ -1,0 +1,42 @@
+.confirmedTravelDiv {
+    border: 2px green solid;
+    background: linear-gradient(135deg, #f5faf6, #c3e2ca);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px ;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin: 10px;
+    display: flex;
+    place-items: center;
+}
+.waitingTravelDiv {
+    border: 2px rgb(128, 109, 0) solid;
+    background: linear-gradient(135deg, #f5faf6, #e2dfc3);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px ;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin: 10px;
+    display: flex;
+    place-items: center;
+}
+
+.icon{
+    size: 10px;
+}
+
+
+.singleTravelDiv{
+    border: 2px rgb(0, 87, 128) solid;
+    background: linear-gradient(135deg, #f5f9fa, rgb(157 184 189));
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px ;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin: 10px;
+    /* display: flex; */
+    /* place-items: center; */
+}

@@ -11,6 +11,7 @@ const URL = 'http://localhost:8080';
 function ShowsMatchTravels(props) {
 
     let {originTravel ,socket,callback} = props;
+
     const [matchTravels, setMatchTravels] = useState([])
     let keyCounter = 0;
 
@@ -94,6 +95,7 @@ function ShowsMatchTravels(props) {
     }
 
     const listTemplate = (travel) => {
+        console.log("✌✌✌travel "+travel)
         keyCounter++;
         return (
             <div className="matchTravel">
