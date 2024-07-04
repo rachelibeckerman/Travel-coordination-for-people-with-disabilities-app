@@ -10,6 +10,7 @@ import ShowsMatchTravels from '../../components/ShowsMatchTravels/ShowsMatchTrav
 import { Sidebar } from 'primereact/sidebar';
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import './Home.css'
+
 import { Toast } from 'primereact/toast';
 
 
@@ -25,6 +26,29 @@ function Home({ socket }) {
     const { id } = useParams();
     const [visibleAdd, setVisibleAdd] = useState(false);
     const [visibleSearch, setVisibleSearch] = useState(false);
+    const [activeLink, setActiveLink] = useState('home');
+
+    const handleNavClick = (componentName) => {
+        setActiveLink(componentName);
+    };
+
+    // const renderSelectedComponent = () => {
+    //     switch (activeLink) {
+    //         case 'home':
+    //             return (
+    //                 <div className='homeDiv'>
+    //                     <h1 className='enterTitle'>hello {currentUser.username}</h1>
+    //                 </div>
+    //             )
+    //         case 'AddTravel':
+    //             return;
+    //         case 'SearchTravel':
+    //             return;
+    //         case 'PersonaAccount':
+    //             return (<>aboutUs</>);
+
+    //     }
+    // };
     const toast = useRef(null);
 
     const logOut = () => {
@@ -54,13 +78,14 @@ function Home({ socket }) {
 
 
     const handleSearch = (params) => {
-        console.log("params---------- "+JSON.stringify(params))
+        console.log("params---------- " + JSON.stringify(params))
         setVisibleSearch(false);
         setOriginTravel(params);
         setShowsMatchTravels(true)
     }
     const handleAdd = (params) => {
-        setVisibleAdd(false);
+        // setVisibleAdd(false);
+        setActiveLink("home")
         console.log("join_room join_room", { room: params.travelId })
         socket.emit('join_room', { room: params.travelId });
         socket.on('passenger_joined', (data) => {
@@ -72,8 +97,21 @@ function Home({ socket }) {
 
     return (
         <>
+            <nav className="navbar">
+                <p className={`nav-link ${activeLink == 'AddTravel' ? 'active-link' : ''}`} onClick={() => handleNavClick("AddTravel")} ><Link>Add travel</Link></p>
+                <p className={`nav-link ${activeLink == 'SearchTravel' ? 'active-link' : ''}`} onClick={() => handleNavClick("SearchTravel")} ><Link>Search travel</Link></p>
+                <p className={`nav-link ${activeLink == 'PersonaAccount' ? 'active-link' : ''}`} onClick={() => handleNavClick("PersonaAccount")} ><Link to="./personalAccount">Personal account</Link></p>
+            </nav>
+            {activeLink == 'AddTravel' && <TravelFrom userId={id} userType="driver" closeModal={handleAdd} />}
+            {activeLink == 'SearchTravel' && <TravelFrom userId={id} userType="passenger" closeModal={handleSearch} />}
 
-            <button onClick={logOut}>Logout</button>
+            <Sidebar style={{ width: '500px' }} visible={showsMatchTravels} onHide={() => setShowsMatchTravels(false)} className="w-full md:w-20rem lg:w-30rem">
+                <ShowsMatchTravels originTravel={originTravel} socket={socket} />
+            </Sidebar>
+
+            {/* {activeLink == 'PersonaAccount' && <TravelFrom userId={id} userType="passenger" closeModal={handleSearch} />} */}
+
+            {/* <button onClick={logOut}>Logout</button>
             <h1>Home</h1>
             {currentUser && console.log(currentUser)}
             {currentUser && <h2> Hi {currentUser.firstName}</h2>}
@@ -96,8 +134,8 @@ function Home({ socket }) {
 
             <Sidebar style={{ width: '500px' }} visible={showsMatchTravels} onHide={() => setShowsMatchTravels(false)} className="w-full md:w-20rem lg:w-30rem">
                 <ShowsMatchTravels originTravel={originTravel} socket={socket} />
-            </Sidebar>
-
+            </Sidebar> */}
+            <Outlet />
         </>
     );
 }

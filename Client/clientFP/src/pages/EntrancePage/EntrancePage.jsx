@@ -42,6 +42,7 @@ import React, { useState } from 'react';
 import { Nav } from 'rsuite';
 import './EntrancePage.css'
 import logo1 from "../../IMG/logo1.jpg";
+import homeImg from "../../IMG/4.jpg";
 import { Link, useNavigate, Outlet, useParams } from "react-router-dom";
 const EntrancePage = () => {
   // const [selectedComponent, setSelectedComponent] = useState('hello');
@@ -53,7 +54,14 @@ const EntrancePage = () => {
   const renderSelectedComponent = () => {
     switch (activeLink) {
       case 'hello':
-        return (<>hello</>);
+        return (
+          <div className='homeDiv'>
+
+            <h1 className='enterTitle'>Darchei Noam</h1>
+            <h4 className='slogen'>Travel arrangement for people with disabilities</h4>
+
+          </div>
+        )
       // case 'Login':
       //   // navigate(`/login`);
       //   return;
@@ -72,15 +80,15 @@ const EntrancePage = () => {
 
 
 
-      <div className="navbar" >
-        <nav className="navbar">
-          {/* <a style={{width:"20px", height:"20px"}}><  img src={logo1} /></a> */}
-          
-          <p  className={`nav-link ${activeLink == 'Login' ? 'active-link' : ''}`} onClick={() => handleNavClick("Login")} ><Link to="/login">Login</Link></p>
-          <p  className={`nav-link ${activeLink == 'Register' ? 'active-link' : ''}`} onClick={() => handleNavClick("Register")} ><Link to="/register">Register</Link></p>
-          <p  className={`nav-link ${activeLink == 'AboutUs' ? 'active-link' : ''}`} onClick={() => handleNavClick("AboutUs")} ><Link >About us</Link></p>
-        </nav>
-      </div>
+
+      <nav className="navbar">
+        {/* <a style={{width:"20px", height:"20px"}}><  img src={logo1} /></a> */}
+
+        <p className={`nav-link ${activeLink == 'Login' ? 'active-link' : ''}`} onClick={() => handleNavClick("Login")} ><Link to="/login">Login</Link></p>
+        <p className={`nav-link ${activeLink == 'Register' ? 'active-link' : ''}`} onClick={() => handleNavClick("Register")} ><Link to="/register">Register</Link></p>
+        <p className={`nav-link ${activeLink == 'AboutUs' ? 'active-link' : ''}`} onClick={() => handleNavClick("AboutUs")} ><Link >About us</Link></p>
+      </nav>
+
       <div className="content">
         {renderSelectedComponent()}
       </div>

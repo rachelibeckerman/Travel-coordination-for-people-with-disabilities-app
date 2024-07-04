@@ -55,14 +55,11 @@
 
 import React, { useState } from 'react';
 import { LoadScript, Autocomplete } from '@react-google-maps/api';
+import { InputText } from 'primereact/inputtext';
 
-const AutocompleteLocation = () => {
+const AutocompleteLocation = ({placeholder,value,name,onChange,getGeoCode}) => {
     const [autocomplete, setAutocomplete] = useState(null);
     const [selectedPlace, setSelectedPlace] = useState(null);
-    console.log("autocomplete")
-    console.log(autocomplete)
-    console.log("selectedPlace")
-    console.log(selectedPlace)
 
     const onLoad = (autocomplete) => {
         setAutocomplete(autocomplete);
@@ -71,10 +68,11 @@ const AutocompleteLocation = () => {
     const onPlaceChanged = () => {
         if (autocomplete !== null) {
             const place = autocomplete.getPlace();
-            setSelectedPlace({
-                lat: place.geometry.location.lat(),
-                lng: place.geometry.location.lng()
-            });
+            getGeoCode(place,name)
+            // setSelectedPlace({
+            //     lat: place.geometry.location.lat(),
+            //     lng: place.geometry.location.lng()
+            // });
         } else {
             console.log('Autocomplete is not loaded yet!');
         }
@@ -83,9 +81,12 @@ const AutocompleteLocation = () => {
     return (
         <LoadScript libraries={["places"]} googleMapsApiKey='AIzaSyAX67Cc08cXAvSkSC4nGEs3BfEVMiK8Muc'>
             <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
-                <input
+                <InputText
                     type="text"
-                    placeholder="Enter a location"
+                    // value={value}
+                    placeholder={placeholder}
+                    name={name}
+                    onChange={onChange}
                     style={{ width: '300px' }}
                 />
             </Autocomplete>

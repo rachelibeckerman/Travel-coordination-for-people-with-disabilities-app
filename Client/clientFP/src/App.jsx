@@ -52,8 +52,9 @@ function App() {
           {/* <Route path="/user/:id" element={<Home />}>
             <Route path='personalAccount' element={<PersonalAccount />} />
           </Route> */}
-          <Route path="/user/:id" element={<Home socket={socket} />} />
-          <Route path='/user/:id/personalAccount' element={<PersonalAccount socket={socket} />} />
+          <Route path="/user/:id" element={<Home socket={socket} />} >
+            <Route path='personalAccount' element={<PersonalAccount socket={socket} />} />
+          </Route>
           {/* <Route path="posts">
               <Route index element={<Posts />} />
               <Route path=':postId/comments' element={<Comments />} />

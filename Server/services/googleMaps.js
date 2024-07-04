@@ -24,10 +24,6 @@ export const getDistanceMatrix = async (origins, destinations) => {
 export const getMinimalDistance = async (originsS, originsD, destinationsS, destinationsD) => {
     const distanceMatrixStart = await getDistanceMatrix(originsS, destinationsS);
     const distanceMatrixDestination = await getDistanceMatrix(originsD, destinationsD);
-    // console.log("distanceMatrixStart.row[0]")
-    // console.log(distanceMatrixStart.rows[0].elements)
-    // console.log("distanceMatrixDestination.row[0]")
-    // console.log(distanceMatrixDestination.rows[0].elements)
     let minimalDistance = Number.MAX_VALUE;
     let minimalDistanceIdx = null;
 
@@ -39,6 +35,5 @@ export const getMinimalDistance = async (originsS, originsD, destinationsS, dest
             minimalDistanceIdx = i;
         }
     }
-    // console.log(minimalDistance)
     return minimalDistanceIdx
 }
