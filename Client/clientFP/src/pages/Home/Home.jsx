@@ -1,21 +1,21 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Link, useNavigate, Outlet, useParams } from "react-router-dom";
 import { useContext } from "react"
 import { UserContext } from "../../App";
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import TravelFrom from '../../components/TravelForm/TravelForm';
-import SearchTravelForm from '../../components/SearchTravelForm/SearchTravelForm'
 import ShowsMatchTravels from '../../components/ShowsMatchTravels/ShowsMatchTravels'
 import { Sidebar } from 'primereact/sidebar';
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import './Home.css'
-import LocationForm from "../../components/AutocompleteLocation/AutocompleteLocation";
+import { Toast } from 'primereact/toast';
+
 
 const URL = 'http://localhost:8080';
 
-function Home({socket}) {
+function Home({ socket }) {
 
     const navigate = useNavigate()
     const { currentUser, setCurrentUser } = useContext(UserContext);
@@ -25,11 +25,18 @@ function Home({socket}) {
     const { id } = useParams();
     const [visibleAdd, setVisibleAdd] = useState(false);
     const [visibleSearch, setVisibleSearch] = useState(false);
+    const toast = useRef(null);
 
     const logOut = () => {
         localStorage.removeItem("currentUser");
         window.history.replaceState(null, null, '/');
         navigate('/');
+    }
+
+    const showConfirmToast = (data) => {
+        console.log("in show function in home", data)
+        toast.current.show({ severity: 'info', summary: 'Info', detail: data });
+
     }
 
     // useEffect(() => {
@@ -53,15 +60,18 @@ function Home({socket}) {
     }
     const handleAdd = (params) => {
         setVisibleAdd(false);
-        console.log("join_room join_room" ,{ room: params.travelId })
+        console.log("join_room join_room", { room: params.travelId })
         socket.emit('join_room', { room: params.travelId });
         socket.on('passenger_joined', (data) => {
-            console.log("passenger_joined " ,data)
+            console.log("passenger_joined ", data)
             setTravelsToConfirm([...travelsToConfirm, data]);
         })
     }
+
+
     return (
         <>
+
             <button onClick={logOut}>Logout</button>
             <h1>Home</h1>
             {currentUser && console.log(currentUser)}
@@ -84,7 +94,7 @@ function Home({socket}) {
             <button onClick={() => navigate(`./personalAccount`)}>Personal Account</button>
 
             <Sidebar style={{ width: '500px' }} visible={showsMatchTravels} onHide={() => setShowsMatchTravels(false)} className="w-full md:w-20rem lg:w-30rem">
-                <ShowsMatchTravels originTravel={originTravel}  socket ={socket}/>
+                <ShowsMatchTravels originTravel={originTravel} socket={socket} />
             </Sidebar>
 
         </>

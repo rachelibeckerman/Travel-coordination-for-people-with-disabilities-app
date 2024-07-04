@@ -1,9 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import {loginRouter} from './router/loginRouter.js'
-import {registerRouter} from './router/registerRouter.js'
-import {travelsRouter} from './router/travelsRouter.js'
-import {communicationsRouter} from './router/communicationsRouter.js'
+import { loginRouter } from './router/loginRouter.js'
+import { registerRouter } from './router/registerRouter.js'
+import { travelsRouter } from './router/travelsRouter.js'
+import { communicationsRouter } from './router/communicationsRouter.js'
+import { logErrors } from './middleware/logError.js'
 // import {usersRouter} from './router/usersRouter.js'
 import jwt from 'jsonwebtoken';
 const app = express();
@@ -31,11 +32,11 @@ app.use(express.json());
 // app.use('/tokenAuth', verifyJWT);
 //============================================================================
 
-app.use('/login',loginRouter);
-app.use('/register',registerRouter);
-app.use('/travels',travelsRouter);
-app.use('/communications',communicationsRouter);
-
+app.use('/login', loginRouter);
+app.use('/register', registerRouter);
+app.use('/travels', travelsRouter);
+app.use('/communications', communicationsRouter);
+app.use(logErrors);
 // app.use('/users',usersRouter);
 
 app.listen(8080, (err) => {

@@ -45,7 +45,7 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
           </Route>
-           {/* <Route path="/" element={<EntrancePage />} />
+          {/* <Route path="/" element={<EntrancePage />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
           */}
@@ -53,7 +53,7 @@ function App() {
             <Route path='personalAccount' element={<PersonalAccount />} />
           </Route> */}
           <Route path="/user/:id" element={<Home socket={socket} />} />
-          <Route path='/user/:id/personalAccount' element={<PersonalAccount />} />
+          <Route path='/user/:id/personalAccount' element={<PersonalAccount socket={socket} />} />
           {/* <Route path="posts">
               <Route index element={<Posts />} />
               <Route path=':postId/comments' element={<Comments />} />

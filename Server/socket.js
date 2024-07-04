@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
   socket.on('confirm_travel', (data) => {
     console.log("start socket confirm_travel", data)
     const { room, msg } = data;
-    io.in(room).emit('travel_confirmed', msg);
+    io.in(191).emit('travel_confirmed', msg);
   });
 
   socket.on('reject_order', (data) => {

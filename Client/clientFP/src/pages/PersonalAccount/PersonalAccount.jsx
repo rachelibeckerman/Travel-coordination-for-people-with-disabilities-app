@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useContext } from "react"
 import { UserContext } from "../../App";
 import { useParams } from "react-router-dom";
@@ -9,21 +9,27 @@ import { get } from "../../components/GeneralRequest"
 import { LoadScript, Autocomplete } from '@react-google-maps/api';
 import { Menubar } from 'primereact/menubar';
 import ShowTravelsToConfirm from '../../components/ShowTravelsToConfirm/ShowTravelsToConfirm'
+import ShowTravelCommunications from '../../components/ShowTravelsCommunications/ShowTravelsCommunications'
+import ShowPassengerTravels from '../../components/ShowPassengerTravels/ShowPassengerTravels';
 import 'primeicons/primeicons.css';
 import "./PersonalAccount.css";
-import io from 'socket.io-client';
-
+import { Toast } from 'primereact/toast';
 
 const URL = 'http://localhost:8080';
 
-function PersonalAccount() {
+function PersonalAccount({ socket }) {
   const { id } = useParams();
   const [userTravels, setUserTravels] = useState([])
-  const [editTravels, seteditTravels] = useState(null)
+  const [editTravels, seteditTravelsView] = useState(null)
   const [updateTravelObj, setUpdateTravelObj] = useState({})
-  const [times, setTimes] = useState(true)
+  const [show, setShow] = useState(false)
   const [showTravels, setShowTravels] = useState(true);
   const [showWaiting, setShowWaiting] = useState(false);
+  const [showCommunications, setShowCommunications] = useState(false);
+  const [showPassTravels, setShowPassTravels] = useState(false);
+
+  const toast = useRef(null);
+
   let keyCounter = 0;
 
   const items = [
@@ -33,6 +39,8 @@ function PersonalAccount() {
       command: () => {
         setShowTravels(true);
         setShowWaiting(false);
+        setShowCommunications(false)
+        setShowPassTravels(false)
       }
     },
     {
@@ -41,15 +49,31 @@ function PersonalAccount() {
       command: () => {
         setShowTravels(false);
         setShowWaiting(true);
+        setShowCommunications(false)
+        setShowPassTravels(false)
+
       }
     },
     {
-      label: 'Projects',
+      label: 'communications',
       icon: 'pi pi-search',
+      command: () => {
+        setShowTravels(false);
+        setShowWaiting(false);
+        setShowCommunications(true)
+        setShowPassTravels(false)
+      }
     },
     {
-      label: 'Contact',
-      icon: 'pi pi-envelope'
+      label: 'travels that you are the passenger',
+      icon: 'pi pi-envelope',
+      command: () => {
+        setShowTravels(false);
+        setShowWaiting(false);
+        setShowCommunications(false)
+        setShowPassTravels(true)
+
+      }
     }
   ];
 
@@ -63,7 +87,8 @@ function PersonalAccount() {
             const [start, destination] = await geocodeAddress(response.data[i].startPoint, response.data[i].destinationPoint);
             response.data[i] = { ...response.data[i], startLocationTxt: start, destinationLocationTxt: destination }
           }
-          setUserTravels(response.data)
+          setUserTravels(response.data);
+          travelsWaitingToconfirm(response.data);
         }
         catch (err) {
           console.log(`ERROR: ${err}`)
@@ -89,9 +114,30 @@ function PersonalAccount() {
     }
   }
 
+  const travelsWaitingToconfirm = (userTravels) => {
+    console.log("travelsWaitingToconfirm")
+    for (let i = 0; i < userTravels.length; i++) {
+      console.log("isAvailable", userTravels[i].isAvailable)
+      if (userTravels[i].userType == 'passenger' && userTravels[i].isAvailable == 1) {
+        socket.emit('join_room', { room: userTravels[i].id })
+        console.log("join_room", { room: userTravels[i].id });
+      }
+    }
+  }
 
 
-  const deleteTravel = (travelId) => {
+  socket.on("travel_confirmed", (data) => {
+    console.log("travel_confirmed", typeof (data));
+    // toast.current.show({ severity: 'info', summary: 'Info', detail: `travel ${data} confirm` });
+    setShow(true)
+    
+  })
+
+  useEffect(() => {
+    show && toast.current.show({ severity: 'info', summary: 'Sticky', detail: `travel id  confirm` });
+  }, [show])
+
+  const deleteTravelView = (travelId) => {
     alert(travelId)
   }
 
@@ -161,15 +207,15 @@ function PersonalAccount() {
               </div>
               <InputText type="text" defaultValue={travel.additionalSeats} />
               <Button label='update' className="p-button-rounded p-button-danger" onClick={() => (travel.id)} />
-              <Button label='cancel' className="p-button-rounded p-button-danger" onClick={() => seteditTravels(null)} />
+              <Button label='cancel' className="p-button-rounded p-button-danger" onClick={() => seteditTravelsView(null)} />
             </div>
             :
             <div className='travelItem'>
               <h3>from: {travel.startLocationTxt}</h3>
               <h3>to: {travel.destinationLocationTxt}</h3>
               <h3>Additional seats: {travel.additionalSeats}</h3>
-              <Button icon="pi pi-trash" className="p-button-rounded p-button-danger" onClick={() => deleteTravel(travel.id)} />
-              <Button icon="pi pi-pencil" className="p-button-rounded p-button-info" onClick={() => seteditTravels(travel.id)} />
+              <Button icon="pi pi-trash" className="p-button-rounded p-button-danger" onClick={() => deleteTravelView(travel.id)} />
+              <Button icon="pi pi-pencil" className="p-button-rounded p-button-info" onClick={() => seteditTravelsView(travel.id)} />
             </div>
 
 
@@ -181,11 +227,17 @@ function PersonalAccount() {
 
   return (
     <>
+      <div className="card flex justify-content-center">
+        <Toast ref={toast} />
+      </div>
       <div className="card">
         <Menubar model={items} />
       </div>
       {showTravels && <DataView key={keyCounter} value={userTravels} itemTemplate={listTemplate} header={header()} />}
-      {showWaiting && <ShowTravelsToConfirm travels={userTravels} geocodeAddress={geocodeAddress} />}
+      {showWaiting && <ShowTravelsToConfirm travels={userTravels} geocodeAddress={geocodeAddress} socket={socket} />}
+      {showCommunications && <ShowTravelCommunications travels={userTravels} geocodeAddress={geocodeAddress} />}
+      {showPassTravels && <ShowPassengerTravels travels={userTravels} geocodeAddress={geocodeAddress} />}
+
     </>
   );
 }

@@ -6,11 +6,11 @@ import { Button } from 'primereact/button';
 import { get, put } from "../../components/GeneralRequest"
 const URL = 'http://localhost:8080';
 
-function ShowTravelsToConfirm({ travels, geocodeAddress, socket }) {
+function ShowTravelsCommunications({ travels, geocodeAddress }) {
     const [communications, setCommunications] = useState([]);
     const { id } = useParams();
     let keyCounter = 0;
-    console.log(communications);
+    console.log("communications===  "+communications);
     useEffect(() => {
         fetchData();
     }, [])
@@ -20,35 +20,40 @@ function ShowTravelsToConfirm({ travels, geocodeAddress, socket }) {
         let temp = [];
         try {
             for (let i = 0; i < travels.length; i++) {
-                let fullURL = `${URL}/communications/?travelDriverId=${travels[i].id}&status=1`;
-                console.log("fullURL", fullURL);
-                const response = await get(fullURL);
-                for (let i = 0; i < response.data.length; i++) {
-                    const [passengerStart, passengerDestination] = await geocodeAddress(response.data[i].passengerTravel.startPoint, response.data[i].passengerTravel.destinationPoint);
-                    const [driverStart, driverDestination] = await geocodeAddress(response.data[i].driverTravel.startPoint, response.data[i].driverTravel.destinationPoint);
-                    response.data[i].passengerTravel = { ...response.data[i].passengerTravel, startLocationTxt: passengerStart, destinationLocationTxt: passengerDestination };
-                    response.data[i].driverTravel = { ...response.data[i].driverTravel, startLocationTxt: driverStart, destinationLocationTxt: driverDestination };
+                let fullURL1 = `${URL}/communications/?travelDriverId=${travels[i].id}&status=2`;
+                let fullURL2 = `${URL}/communications/?travelPassengerId=${travels[i].id}&status=2`;
+                console.log("fullURL", fullURL1+"   "+fullURL2);
+                const response1 = await get(fullURL1);
+                const response2 = await get(fullURL2);
+                console.log("response1==  "+response1.data+" response2==  "+response2.data)
+                let responseArr=[...response1.data,...response2.data]
+                console.log("responseArr== "+responseArr.length)
+                for (let i = 0; i < responseArr.length; i++) {
+                    const [passengerStart, passengerDestination] = await geocodeAddress(responseArr[i].passengerTravel.startPoint, responseArr[i].passengerTravel.destinationPoint);
+                    const [driverStart, driverDestination] = await geocodeAddress(responseArr[i].driverTravel.startPoint, responseArr[i].driverTravel.destinationPoint);
+                    responseArr[i].passengerTravel = { ...responseArr[i].passengerTravel, startLocationTxt: passengerStart, destinationLocationTxt: passengerDestination };
+                    responseArr[i].driverTravel = { ...responseArr[i].driverTravel, startLocationTxt: driverStart, destinationLocationTxt: driverDestination };
                 }
-                temp = temp.concat(response.data);
+                temp = temp.concat(responseArr);
                 setCommunications(temp)
             }
         } catch (err) {
             console.log(`ERROR: ${err}`);
         }
     }
-    const handleConfirm = async (communication) => {
-        try {
-            const response = await put(`${URL}/communications/${communication.id}`, JSON.stringify({ status: 2 }));
-            console.log("commuincation", communication)
-            console.log("congirim travel", { room: communication.driverTravel.id, confirmTo: communication.passengerTravel.id })
-            socket.emit('confirm_travel', { room: communication.driverTravel.id, confirmTo: communication.passengerTravel.id })
-            fetchData();
-            console.log(response);
-        } catch (err) {
-            console.log(`ERROR: ${err}`);
-        }
+    // const handleConfirm = async (communication) => {
+    //     try {
+    //         const response = await put(`${URL}/communications/${communication.id}`, JSON.stringify({ status: 2 }));
+    //         console.log("commuincation", communication)
+    //         console.log("congirim travel", { room: communication.driverTravel.id, confirmTo: communication.passengerTravel.id })
+    //         socket.emit('confirm_travel', { room: communication.driverTravel.id, confirmTo: communication.passengerTravel.id })
+    //         fetchData();
+    //         console.log(response);
+    //     } catch (err) {
+    //         console.log(`ERROR: ${err}`);
+    //     }
 
-    }
+    // }
 
     const listTemplate = (communication) => {
         keyCounter++;
@@ -81,7 +86,7 @@ function ShowTravelsToConfirm({ travels, geocodeAddress, socket }) {
 
     return (
         <>
-            <DataView key={keyCounter} value={communications} itemTemplate={listTemplate} header={<h1>Waiting to confirm</h1>} />
+            <DataView key={keyCounter} value={communications} itemTemplate={listTemplate} header={<h1>communications</h1>} />
             {/* {communications.map(c =>
                 <div key={c.id}>
                     <p>{JSON.stringify(c)}</p>
@@ -91,4 +96,4 @@ function ShowTravelsToConfirm({ travels, geocodeAddress, socket }) {
     );
 }
 
-export default ShowTravelsToConfirm;
+export default ShowTravelsCommunications;

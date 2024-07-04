@@ -10,7 +10,7 @@ const URL = 'http://localhost:8080';
 
 function ShowsMatchTravels(props) {
 
-    let {originTravel ,socket} = props;
+    let {originTravel ,socket,callback} = props;
     const [matchTravels, setMatchTravels] = useState([])
     let keyCounter = 0;
 
@@ -81,6 +81,10 @@ function ShowsMatchTravels(props) {
             console.log("response communications" ,response)
             console.log("passenger_join" ,{room : travelDriverId ,msg: response.data})
             socket.emit('passenger_join',{room : travelDriverId ,msg: response.data})
+            socket.on("travel_confirmed", (originTravel) => {
+                console.log("travel_confirmed", originTravel);
+                callback(originTravel)
+            })
         }
         catch(err){
             console.log(`ERROR ${err}`);
