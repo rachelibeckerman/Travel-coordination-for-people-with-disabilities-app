@@ -15,14 +15,14 @@ export class CommunicationsService {
         console.log(updateItem.status)
         if (updateItem.status == 2) {
             console.log("i insert if")
-            const { passengerTravel , driverTravel , id} = await this.getCommunicationByParams({ id });
-            console.log("communication", driverTravel[0])
+            const communication = await this.getCommunicationByParams({ id });
+            console.log("communication", communication)
             const paramsQuery = {
                 params: { status: 3 },
-                whereParams: { travelDriverId: driverTravel[0].id }
+                whereParams: { travelDriverId: communication.driverTravel[0].id }
             }
             const queryItems = updateItemQuery('communication', paramsQuery);
-            await executeQuery(queryItems, ['3', driverTravel[0].id])
+            await executeQuery(queryItems, ['3', communication.driverTravel[0].id])
         }
         const queryItems = updateItemQuery('communication', { params: updateItem, whereParams: { id } });
         const result = await executeQuery(queryItems, [...Object.values(updateItem), id])
@@ -33,7 +33,6 @@ export class CommunicationsService {
         console.log("getCommunication in CommunicationsService")
         const queryItems = getByParamsQuery('communication', params);
         const communication = await executeQuery(queryItems, Object.values(params))
-
         const travelService = new TravelService()
         const passengerTravel = await travelService.getTravels({ id: communication[0].travelPassengerId })
         const driverTravel = await travelService.getTravels({ id: communication[0].travelDriverId })
@@ -55,7 +54,6 @@ export class CommunicationsService {
                 driverTravel: driverTravel[0]
             }
         }
-
         return communications;
     }
 
