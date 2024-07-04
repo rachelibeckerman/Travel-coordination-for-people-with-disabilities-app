@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react";
 import { Cookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
-import { post } from "../components/GeneralRequest"
+import { post } from "../../components/GeneralRequest"
 import { useNavigate } from 'react-router-dom'
-import { UserContext } from '../App';
+import { UserContext } from '../../App';
 import { sha256 } from 'js-sha256';
-
+import "./Login.css"
 const URL = 'http://localhost:8080';
 
 function Login() {
