@@ -4,8 +4,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 //import reactLogo from './assets/react.svg'
 //import viteLogo from '/vite.svg'
 //import EntrancePage from "./pages/EntrancePage";
-import EntrancePage from './pages/EntrancePage';
-import Login from './pages/Login';
+import EntrancePage from './pages/EntrancePage/EntrancePage';
+import Login from './pages/Login/Login';
 import Register from './pages/Register';
 import Home from './pages/Home/Home';
 import "primereact/resources/themes/lara-light-cyan/theme.css";
@@ -41,9 +41,14 @@ function App() {
     <UserContext.Provider value={{ currentUser, setCurrentUser }}>
       <Router>
         <Routes>
-          <Route path="/" element={<EntrancePage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<EntrancePage />} >
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+          </Route>
+           {/* <Route path="/" element={<EntrancePage />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+          */}
           {/* <Route path="/user/:id" element={<Home />}>
             <Route path='personalAccount' element={<PersonalAccount />} />
           </Route> */}

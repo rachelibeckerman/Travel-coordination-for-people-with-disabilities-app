@@ -1,0 +1,45 @@
+.navbar {
+    display: flex;
+    justify-content:flex-start;
+    align-items: center;
+    height: 50px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f0f0f0;
+    z-index: 10;
+    
+  }
+  
+  .navbar nav div {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center; 
+  }
+  
+  .navbar nav div.active {
+    background-color: #d41111;
+  }
+  
+  .content {
+    padding: 1rem;
+  }
+  a{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: -webkit-fill-available;
+    padding: 10px;
+    color: black;
+  }
+  
+  
+
+   .active-link {
+    border-bottom: 5px solid rgb(128, 163, 232);
+    border-top: 5px solid rgb(128, 163, 232);
+   } 
+  
