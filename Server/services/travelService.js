@@ -32,12 +32,11 @@ export class TravelService {
         return result;
     }
 
-
     async handlePassengerTravel(params) {
         try {
             console.log("params")
             console.log(params)
-            const resultAddTravel = this.addTravel(params); 
+            const resultAddTravel = this.addTravel(params);
             let location = {
                 latStart: params.latStart,
                 lngStart: params.lngStart,
@@ -55,7 +54,6 @@ export class TravelService {
             console.log(error);
         }
     }
-
 
     async getCloseTravels(params) {
         console.log("in getCloseTravels srvice")
@@ -82,17 +80,21 @@ export class TravelService {
                 lng: origins.lngDestination
             }
 
-            const closestTravel = await getMinimalDistance([originsS], [originsD], destinationsS, destinationsD);
-            const queryGetTravel = getByParamsQuery('travels', { "id": destinations[closestTravel].id });
-            const getTravelRes = await executeQuery(queryGetTravel, [destinations[closestTravel].id]);
-            console.log("getTravelRes   "+JSON.stringify(getTravelRes))
-            return getTravelRes[0];
+            const closestTravel = await getMinimalDistance([originsS], [originsD], destinationsS, destinationsD, process.env.LIMIT_DISTANCE);
+            const queryGetTravel = getByParamsQuery('travels', { "id": destinations[0].id });
+            const idArr = closestTravel.map(travel => destinations[travel].id)
+            const getTravelRes = []
+            for (let i = 0; i < idArr.length; i++) {
+                 const result= await executeQuery(queryGetTravel, [idArr[i]]);
+                 getTravelRes[i] = result[0]
+            }
+            console.log("getTravelRes   " + JSON.stringify(getTravelRes))
+            return getTravelRes;
 
         } catch (error) {
             console.log("error in getminimal");
             console.log(error);
         }
-
 
     }
 
@@ -105,6 +107,7 @@ export class TravelService {
     }
 
 }
+
 
 
 
