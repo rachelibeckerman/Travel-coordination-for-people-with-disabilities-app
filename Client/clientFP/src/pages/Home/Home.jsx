@@ -24,7 +24,7 @@ function Home({ socket }) {
     const [showsMatchTravels, setShowsMatchTravels] = useState(false);
     const [travelsToConfirm, setTravelsToConfirm] = useState([])
     const { id } = useParams();
-    const [visibleAdd, setVisibleAdd] = useState(false);
+    // const [visibleAdd, setVisibleAdd] = useState(false);
     const [visibleSearch, setVisibleSearch] = useState(false);
     const [activeLink, setActiveLink] = useState('home');
 
@@ -79,7 +79,7 @@ function Home({ socket }) {
 
     const handleSearch = (params) => {
         console.log("params---------- " + JSON.stringify(params))
-        setVisibleSearch(false);
+        setActiveLink("home")
         setOriginTravel(params);
         setShowsMatchTravels(true)
     }
@@ -98,9 +98,10 @@ function Home({ socket }) {
     return (
         <>
             <nav className="navbar">
-                <p className={`nav-link ${activeLink == 'AddTravel' ? 'active-link' : ''}`} onClick={() => handleNavClick("AddTravel")} ><Link>Add travel</Link></p>
-                <p className={`nav-link ${activeLink == 'SearchTravel' ? 'active-link' : ''}`} onClick={() => handleNavClick("SearchTravel")} ><Link>Search travel</Link></p>
+                <p className={`nav-link ${activeLink == 'AddTravel' ? 'active-link' : ''}`} onClick={() => handleNavClick("AddTravel")} ><Link to={`/user/${id}`}>Add travel</Link></p>
+                <p className={`nav-link ${activeLink == 'SearchTravel' ? 'active-link' : ''}`} onClick={() => handleNavClick("SearchTravel")} ><Link to={`/user/${id}`}>Search travel</Link></p>
                 <p className={`nav-link ${activeLink == 'PersonaAccount' ? 'active-link' : ''}`} onClick={() => handleNavClick("PersonaAccount")} ><Link to="./personalAccount">Personal account</Link></p>
+                <p className={`nav-link`} onClick={logOut} ><Link>Logout</Link></p>
             </nav>
             {activeLink == 'AddTravel' && <TravelFrom userId={id} userType="driver" closeModal={handleAdd} />}
             {activeLink == 'SearchTravel' && <TravelFrom userId={id} userType="passenger" closeModal={handleSearch} />}

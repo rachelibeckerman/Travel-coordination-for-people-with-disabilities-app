@@ -13,6 +13,7 @@ function ShowsMatchTravels(props) {
     let {originTravel ,socket,callback} = props;
 
     const [matchTravels, setMatchTravels] = useState([])
+    
     let keyCounter = 0;
 
     console.log("in ShowsMatchTravels component")
@@ -30,8 +31,10 @@ function ShowsMatchTravels(props) {
     useEffect(() => {
         console.log("in ShowsMatchTravels useefect")
         async function fetchData() {
+            console.log("uurrll "+location)
             const response = await get(`${URL}/travels/closestTravels/${location}`);
-            setMatchTravels([response.data])
+            console.log(response)
+            setMatchTravels(response.data)
         }
         try {
             

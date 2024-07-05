@@ -17,8 +17,8 @@ function ShowPassengerTravels({ travels, geocodeAddress }) {
     const [communications, setCommunications] = useState([]);
     const [singleTravels, setSingleTravels] = useState([]);
     const [editTravels, seteditTravelsView] = useState(null)
-    const [showsMatchTravels, setShowsMatchTravels] = useState({ status: false, originTravel: null })
-    const { id } = useParams();
+    const [showsMatchTravels, setShowsMatchTravels] = useState([false, null])
+     const { id } = useParams();
     let keyCounter1 = 0;
     let keyCounter2 = 0;
     useEffect(() => {
@@ -107,7 +107,6 @@ function ShowPassengerTravels({ travels, geocodeAddress }) {
     };
 
     const handleSearchTravel = (travel) => {
-
         // let baseTravel = {
         //     id: travel.id,
         //     userId: id,
@@ -118,21 +117,21 @@ function ShowPassengerTravels({ travels, geocodeAddress }) {
         //     isAvailable: travel.isAvailable,
         //     userType: travel.userType,
         // }
-        let baseTravel = {
-            userId: travel.userId,
-            userType: travel.userType,
-            date: travel.date,
-            latStart: travel.startPoint.x,
-            lngStart: travel.startPoint.y,
-            latDestination: travel.destinationPoint.x,
-            lngDestination: travel.destinationPoint.y,
-            additionalSeats: travel.additionalSeats,
-            isAvailable: travel.isAvailable,
-            travelId: travel.id
-        }
-        console.log("tttttrrrrrvvvvvlll  " + JSON.stringify(travel));
-        console.log("baseTravel😒👌😒 " + baseTravel)
-        setShowsMatchTravels({ status: true, originTravel: baseTravel })
+        // let baseTravel={
+        //     "userId":"1",
+        //     "userType":"passenger",
+        //     "date":"2024-07-10T14:57:57.707Z",
+        //     "latStart":"31.780556",
+        //     "lngStart":" 35.208762",
+        //     "latDestination":"31.787821",
+        //     "lngDestination":"35.202598",
+        //     "additionalSeats":"2",
+        //     "isAvailable":1,
+        //     "travelId":203
+        // }
+        console.log("tttttrrrrrvvvvvlll  "+JSON.stringify(travel));
+        // console.log("baseTravel😒👌😒 " +baseTravel)
+        // setShowsMatchTravels[true,baseTravel]
     }
 
     const listTemplateSingles = (travel) => {
@@ -208,19 +207,19 @@ function ShowPassengerTravels({ travels, geocodeAddress }) {
                                 <h3>Additional seats: {travel.additionalSeats}</h3>
                                 <Button icon="pi pi-trash" className="p-button-rounded p-button-danger" onClick={() => deleteTravelView(travel.id)} />
                                 <Button icon="pi pi-pencil" className="p-button-rounded p-button-info" onClick={() => seteditTravelsView(travel.id)} />
-                                <Button icon="pi pi-search" className="p-button-rounded p-button-search" onClick={() => handleSearchTravel(travel)} />
+                                <Button icon="pi pi-search" className="p-button-rounded p-button-search" onClick={()=>handleSearchTravel(travel)} />
                             </div>
                     }
                 </div>
             </>
         );
     };
-    console.log("showsMatchTravels.status "+showsMatchTravels.status);
+
     return (
         <>
             {communications.length != 0 && <DataView key={keyCounter1} value={communications} itemTemplate={listTemplateComm} />}
             {singleTravels.length != 0 && <DataView key={keyCounter2} value={singleTravels} itemTemplate={listTemplateSingles} />}
-            <Sidebar style={{ width: '500px' }} visible={showsMatchTravels.status} onHide={() => setShowsMatchTravels({ status: false, originTravel: null })} className="w-full md:w-20rem lg:w-30rem">
+            <Sidebar style={{ width: '500px' }} visible={showsMatchTravels[0]} onHide={() => setShowsMatchTravels(false)} className="w-full md:w-20rem lg:w-30rem">
                 <ShowsMatchTravels originTravel={showsMatchTravels.originTravel} />
             </Sidebar>
         </>

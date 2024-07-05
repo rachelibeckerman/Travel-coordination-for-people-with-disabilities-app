@@ -44,7 +44,7 @@
    } 
   
 
-
+/* 
    .homeImg{
     width: 100vw;
     height: 100vh;
@@ -52,7 +52,7 @@
     max-width: 500px;
   max-height: 300px;
   object-fit: contain;
-   }
+   } */
 
    /* body{
     background-image:url("../../IMG/4.jpg");
@@ -64,7 +64,7 @@
    /* background-attachment: fixed; /* תמונת הרקע תישאר במקומה בעת גלילה */
    /* }  */
 
-  .homeDiv{
+  /* .homeDiv{
     position: relative;
     
     display: flex;
@@ -73,13 +73,13 @@
     
     width:100vw;
     height: 94vh;
-    background-image:url("../../IMG/4.jpg");
+    /* background-image:url("../../IMG/4.jpg"); */
     /* background-color: rgba(0, 0, 0, 0.1); */
-    background-repeat: repeat-y; /* חזור על התמונה אנכית */
-    background-position: center top; /* מיקום התמונה במרכז למעלה */
-    background-size: cover; /* כסה את כל שטח האלמנט תוך שמירה על פרופורציות */
-    background-attachment: fixed; /* תמונת הרקע תישאר במקומה בעת גלילה */
-  }
+    /* background-repeat: repeat-y; 
+    background-position: center top; 
+    background-size: cover; 
+    background-attachment: fixed; 
+  } */ 
 
   .enterTitle{
     color: #534030;
@@ -93,7 +93,7 @@
   }
   .slogen{
     color: #534030;
-    width: 100vw;
+    width: 100%;
     background-color: #f0f0f0af;
     position: absolute;
     top: 58%;
@@ -104,4 +104,15 @@
   .title-slogen-div{
     width:fit-content;
     
+  }
+  body{
+    background-image:url("../../IMG/4.jpg");
+    background-repeat: repeat-y; /* חזור על התמונה אנכית */
+    background-position: center top; /* מיקום התמונה במרכז למעלה */
+    background-size: cover; /* כסה את כל שטח האלמנט תוך שמירה על פרופורציות */
+    background-attachment: fixed; /* תמונת הרקע תישאר במקומה בעת גלילה */ 
+    background-repeat: repeat-y; /* חזור על התמונה אנכית */
+    background-position: center top; /* מיקום התמונה במרכז למעלה */
+    background-size: cover; /* כסה את כל שטח האלמנט תוך שמירה על פרופורציות */
+    background-attachment: fixed; /* תמונת הרקע תישאר במקומה בעת גלילה */
   }
