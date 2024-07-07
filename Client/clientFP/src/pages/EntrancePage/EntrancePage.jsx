@@ -23,8 +23,8 @@ const EntrancePage = () => {
       </nav>
       {activeLink == 'hello' &&
         <div className='homeDiv'>
-          <h1 className='enterTitle'>Darchei Noam</h1>
-          <h4 className='slogen'>Travel arrangement for people with disabilities</h4>
+          <h1 className='enterTitle'>Freedom wheels</h1>
+          <h4 className='slogen'>Drive everyone everywhere</h4>
         </div>}
       {activeLink == 'AboutUs' &&
         <div>

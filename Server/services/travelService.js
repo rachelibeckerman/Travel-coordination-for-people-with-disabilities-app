@@ -23,7 +23,6 @@ export class TravelService {
             rideObj.destinationPoint[0],
             rideObj.destinationPoint[1],
             rideObj.isAvailable,
-            // rideObj.additionalSeats.toString(),
             rideObj.additionalSeats,
             rideObj.userType
         ];
@@ -34,8 +33,6 @@ export class TravelService {
 
     async handlePassengerTravel(params) {
         try {
-            console.log("params")
-            console.log(params)
             const resultAddTravel = this.addTravel(params);
             let location = {
                 latStart: params.latStart,
@@ -50,13 +47,11 @@ export class TravelService {
             }
             return resultObj
         } catch (error) {
-            console.log("error in getminimal");
             console.log(error);
         }
     }
 
     async getCloseTravels(params) {
-        console.log("in getCloseTravels srvice")
         try {
             const date = new Date(params.date);
             const Day = date.getDate();
@@ -68,8 +63,6 @@ export class TravelService {
                 date: dateString
             }
 
-            console.log("paramsObj")
-            console.log(paramsObj)
             const queryItems = getByParamsQuery("travels", paramsObj);
             const destinations = await executeQuery(queryItems, Object.values(paramsObj));
             const destinationsS = destinations.map(obj => ({
@@ -100,11 +93,9 @@ export class TravelService {
                 const result = await executeQuery(queryGetTravel, [idArr[i]]);
                 getTravelRes[i] = result[0]
             }
-            console.log("getTravelRes   " + JSON.stringify(getTravelRes))
             return getTravelRes;
 
         } catch (error) {
-            console.log("error in getminimal");
             console.log(error);
         }
 
@@ -112,9 +103,7 @@ export class TravelService {
 
     async getTravels(params) {
         const queryItems = getByParamsQuery("travels", params);
-        console.log("queryItems: " + queryItems)
         const result = await executeQuery(queryItems, Object.values(params));
-        console.log("result: " + result)
         return result;
     }
 
