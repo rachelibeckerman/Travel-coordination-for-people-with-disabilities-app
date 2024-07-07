@@ -16,22 +16,22 @@ function ShowsMatchTravels(props) {
 
         let keyCounter = 0;
 
-        let location = {
-            latStart: originTravel.latStart,
-            lngStart: originTravel.lngStart,
-            latDestination: originTravel.latDestination,
-            lngDestination: originTravel.lngDestination
-        }
-        location = JSON.stringify(location)
+        // let location = {
+        //     latStart: originTravel.latStart,
+        //     lngStart: originTravel.lngStart,
+        //     latDestination: originTravel.latDestination,
+        //     lngDestination: originTravel.lngDestination
+        // }
+        // location = JSON.stringify(location)
 
         // location = JSON.stringify(location)
 
         useEffect(() => {
             console.log("in ShowsMatchTravels useefect")
             async function fetchData() {
-               let tmp=[]
-                const response = await get(`${URL}/travels/closestTravels/${location}`);
-                tmp=response.data
+                let tmp = []
+                const response = await get(`${URL}/travels/closestTravels/${JSON.stringify(originTravel)}`);
+                tmp = response.data
                 for (let i = 0; i < tmp.length; i++) {
                     const [start, destination] = await geocodeAddress(tmp[i].startPoint, tmp[i].destinationPoint);
                     tmp[i] = { ...tmp[i], startLocationTxt: start, destinationLocationTxt: destination };
