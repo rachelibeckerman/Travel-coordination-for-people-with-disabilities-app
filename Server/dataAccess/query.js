@@ -34,10 +34,10 @@ function createGenericParamsForGet(tableName, queries) {
     if (fields[0] != undefined) {
     console.log("fields[0]  "+fields)
         paramsString += "where "
-        fields.map(key => paramsString += `${key} = ? and `)
+        fields.map(key => paramsString +=key == 'date' ? `DATE(${key}) = ? and `: `${key} = ? and `)
         paramsString = paramsString.slice(0, - 4)
         tableName=="travels"? paramsString += 'and date> NOW()':null
-        tableName=="communication"? paramsString += 'and (status=1 or status=2)':null
+        tableName=="communication"? paramsString += 'and (status=1 or status=2)' : null
     }
     else{
         tableName=="travels"? paramsString += 'where date> NOW()':null

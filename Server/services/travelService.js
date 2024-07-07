@@ -58,17 +58,29 @@ export class TravelService {
     async getCloseTravels(params) {
         console.log("in getCloseTravels srvice")
         try {
-            const queryItems = getTravelsQuery('travels');
-            const destinations = await executeQuery(queryItems);
+            const date = new Date(params.date);
+            const Day = date.getDate();
+            const Month = date.getMonth() + 1; 
+            const Year = date.getFullYear();
+            const dateString = `${Year}-${Month}-${Day}`;
+            const paramsObj = {
+                userType: 'driver',
+                date: dateString
+            }
+
+            console.log("paramsObj")
+            console.log(paramsObj)
+            const queryItems = getByParamsQuery("travels", paramsObj);
+            const destinations = await executeQuery(queryItems, Object.values(paramsObj));
             const destinationsS = destinations.map(obj => ({
                 id: obj.id,
-                lat: obj.latStart,
-                lng: obj.lngStart
+                lat: obj.startPoint.x,
+                lng: obj.startPoint.y
             }));
             const destinationsD = destinations.map(obj => ({
                 id: obj.id,
-                lat: obj.latDestination,
-                lng: obj.lngDestination
+                lat: obj.destinationPoint.x,
+                lng: obj.destinationPoint.y
             }));
             const origins = params
             const originsS = {
@@ -85,8 +97,8 @@ export class TravelService {
             const idArr = closestTravel.map(travel => destinations[travel].id)
             const getTravelRes = []
             for (let i = 0; i < idArr.length; i++) {
-                 const result= await executeQuery(queryGetTravel, [idArr[i]]);
-                 getTravelRes[i] = result[0]
+                const result = await executeQuery(queryGetTravel, [idArr[i]]);
+                getTravelRes[i] = result[0]
             }
             console.log("getTravelRes   " + JSON.stringify(getTravelRes))
             return getTravelRes;
