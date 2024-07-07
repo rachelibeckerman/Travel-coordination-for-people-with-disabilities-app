@@ -10,7 +10,7 @@ export class RegisterController {
                 console.log(req.body)
                 const registerService = new RegisterService();
                 const resultItem = await registerService.addUser(req.body);
-                return res.cookie("token", resultItems.token, { httpOnly: true, secure: true }).json({ id: resultItem.insertId });
+                return res.cookie("token", resultItem.token, { httpOnly: true, secure: true }).json({ id: resultItem.insertId });
             }
         }
         catch (ex) {

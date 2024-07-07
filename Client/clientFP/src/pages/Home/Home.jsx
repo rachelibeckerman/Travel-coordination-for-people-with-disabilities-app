@@ -39,24 +39,17 @@ function Home({ socket }) {
         navigate('/');
     }
 
-    const showConfirmToast = (data) => {
-        console.log("in show function in home", data)
-        toast.current.show({ severity: 'info', summary: 'Info', detail: data });
-
-    }
-
     const handleSearch = (params) => {
-        console.log("params---------- " + JSON.stringify(params))
         setActiveLink("home")
         setOriginTravel(params);
         setShowsMatchTravels(true)
     }
+
     const handleAdd = (params) => {
         setActiveLink("home")
         console.log("join_room join_room", { room: params.travelId })
         socket.emit('join_room', { room: params.travelId });
         socket.on('passenger_joined', (data) => {
-            console.log("passenger_joined ", data)
             setTravelsToConfirm([...travelsToConfirm, data]);
         })
     }

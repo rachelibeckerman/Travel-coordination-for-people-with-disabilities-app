@@ -76,7 +76,6 @@ function ShowsMatchTravels(props) {
                 hideSidebar()
             }
             catch (err) {
-
                 console.log(`ERROR ${err}`);
             }
         }

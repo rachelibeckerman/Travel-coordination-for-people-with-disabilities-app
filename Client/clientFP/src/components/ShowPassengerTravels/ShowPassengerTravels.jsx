@@ -147,7 +147,7 @@ function ShowPassengerTravels({ travels, geocodeAddress, socket }) {
     };
     return (
         <>
-            {communications.length != 0 ? <DataView key={keyCounter1} value={communications} itemTemplate={listTemplateComm} />:<div><h2>loading</h2><i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem' }}></i></div>}
+            {communications.length != 0 && <DataView key={keyCounter1} value={communications} itemTemplate={listTemplateComm} />}
             {singleTravels.length != 0&& <DataView key={keyCounter2} value={singleTravels} itemTemplate={listTemplateSingles} />}
             <Sidebar style={{ width: '500px' }} visible={showsMatchTravels.status} onHide={() => setShowsMatchTravels({ status: false, originTravel: null })} className="w-full md:w-20rem lg:w-30rem">
                 <ShowsMatchTravels originTravel={showsMatchTravels.originTravel} hideSidebar={() => setShowsMatchTravels({ status: false, originTravel: null })} socket={socket} />

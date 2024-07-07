@@ -138,7 +138,7 @@ function ShowDriverTravels({ travels, geocodeAddress,socket }) {
 
     return (
         <>
-            {communications.length != 0?<DataView key={keyCounter1} value={communications} itemTemplate={listTemplateComm} />:<div><h2>loading</h2><i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem' }}></i></div>}
+            {communications.length != 0&&<DataView key={keyCounter1} value={communications} itemTemplate={listTemplateComm} />}
             {singleTravels.length != 0 && <DataView key={keyCounter2} value={singleTravels} itemTemplate={listTemplateSingles} />}
         </>
     );

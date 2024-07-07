@@ -45,29 +45,9 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
           </Route>
-          {/* <Route path="/" element={<EntrancePage />} />
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
-          */}
-          {/* <Route path="/user/:id" element={<Home />}>
-            <Route path='personalAccount' element={<PersonalAccount />} />
-          </Route> */}
           <Route path="/user/:id" element={<Home socket={socket} />} >
             <Route path='personalAccount' element={<PersonalAccount socket={socket} />} />
           </Route>
-          {/* <Route path="posts">
-              <Route index element={<Posts />} />
-              <Route path=':postId/comments' element={<Comments />} />
-              <Route path="search/:field/:data" element={<Posts />} />
-            </Route> 
-            <Route path="todos">
-              <Route index element={<Todos />} />
-              <Route path="search/:field/:data" element={<Todos />} />
-            </Route>
-            <Route path="info" element={<Info />} />   
-            <Route path='*' element={<p>not found</p>}/>  */}
-
-
           <Route path="*" element={<NotFoundPage />} />
 
         </Routes>
