@@ -11,6 +11,7 @@ import { Menubar } from 'primereact/menubar';
 import ShowTravelsToConfirm from '../../components/ShowTravelsToConfirm/ShowTravelsToConfirm'
 import ShowTravelCommunications from '../../components/ShowTravelsCommunications/ShowTravelsCommunications'
 import ShowPassengerTravels from '../../components/ShowPassengerTravels/ShowPassengerTravels';
+import ShowDriverTravels from '../../components/showDriverTravels/showDriverTravels'
 import 'primeicons/primeicons.css';
 import "./PersonalAccount.css";
 import { Toast } from 'primereact/toast';
@@ -27,6 +28,7 @@ function PersonalAccount({ socket }) {
   const [showWaiting, setShowWaiting] = useState(false);
   const [showCommunications, setShowCommunications] = useState(false);
   const [showPassTravels, setShowPassTravels] = useState(false);
+  const [showDriverTravels, setShowDriverTravels] = useState(false);
 
   const toast = useRef(null);
 
@@ -41,6 +43,7 @@ function PersonalAccount({ socket }) {
         setShowWaiting(false);
         setShowCommunications(false)
         setShowPassTravels(false)
+        setShowDriverTravels(false)
       }
     },
     {
@@ -51,7 +54,7 @@ function PersonalAccount({ socket }) {
         setShowWaiting(true);
         setShowCommunications(false)
         setShowPassTravels(false)
-
+        setShowDriverTravels(false)
       }
     },
     {
@@ -62,6 +65,7 @@ function PersonalAccount({ socket }) {
         setShowWaiting(false);
         setShowCommunications(true)
         setShowPassTravels(false)
+        setShowDriverTravels(false)
       }
     },
     {
@@ -72,7 +76,18 @@ function PersonalAccount({ socket }) {
         setShowWaiting(false);
         setShowCommunications(false)
         setShowPassTravels(true)
-
+        setShowDriverTravels(false)
+      }
+    },
+    {
+      label: 'travels that you are the driver',
+      icon: 'pi pi-envelope',
+      command: () => {
+        setShowTravels(false);
+        setShowWaiting(false);
+        setShowCommunications(false)
+        setShowPassTravels(false)
+        setShowDriverTravels(true)
       }
     }
   ];
@@ -82,8 +97,9 @@ function PersonalAccount({ socket }) {
       if (id) {
         try {
           const response = await get(`${URL}/travels/?userId=${id}`);
-          console.log("all travels response " + JSON.stringify(response))
+          // console.log("all travels response " + JSON.stringify(response))
           for (let i = 0; i < response.data.length; i++) {
+            // console.log("response.data[i]   "+JSON.stringify(response.data[i]))
             const [start, destination] = await geocodeAddress(response.data[i].startPoint, response.data[i].destinationPoint);
             response.data[i] = { ...response.data[i], startLocationTxt: start, destinationLocationTxt: destination }
           }
@@ -99,7 +115,8 @@ function PersonalAccount({ socket }) {
 
   const geocodeAddress = async (startPoint, destinationPoint) => {
     try {
-      console.log("in GeocodeAddress")
+      // console.log("in GeocodeAddress")
+      // console.log("startPoint: "+JSON.stringify(startPoint)+"  destinationPoint: "+JSON.stringify(destinationPoint))
       const startPointResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${startPoint.x},${startPoint.y}&language=en&key=AIzaSyAX67Cc08cXAvSkSC4nGEs3BfEVMiK8Muc`);
       const startPointData = await startPointResponse.json();
       const destinatioPointResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${destinationPoint.x},${destinationPoint.y}&language=en&key=AIzaSyAX67Cc08cXAvSkSC4nGEs3BfEVMiK8Muc`);
@@ -236,7 +253,8 @@ function PersonalAccount({ socket }) {
       {showTravels && <DataView key={keyCounter} value={userTravels} itemTemplate={listTemplate} header={header()} />}
       {showWaiting && <ShowTravelsToConfirm travels={userTravels} geocodeAddress={geocodeAddress} socket={socket} />}
       {showCommunications && <ShowTravelCommunications travels={userTravels} geocodeAddress={geocodeAddress} />}
-      {showPassTravels && <ShowPassengerTravels travels={userTravels} geocodeAddress={geocodeAddress} />}
+      {showPassTravels && <ShowPassengerTravels travels={userTravels} geocodeAddress={geocodeAddress} socket={socket}/>}
+      {showDriverTravels && <ShowDriverTravels travels={userTravels} geocodeAddress={geocodeAddress} socket={socket}/>}
 
     </>
   );

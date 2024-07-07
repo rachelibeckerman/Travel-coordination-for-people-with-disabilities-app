@@ -98,3 +98,40 @@ const EntrancePage = () => {
 };
 
 export default EntrancePage
+
+
+
+
+
+
+
+//  import React, { useState, useEffect } from 'react';
+
+//     const LocationComponent = () => {
+//         const [address, setAddress] = useState('');
+    
+//         const geocodeAddress = async (latitude, longitude) => {
+//             try {
+//                 const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyAX67Cc08cXAvSkSC4nGEs3BfEVMiK8Muc`);
+//                 const data = await response.json();
+//                 if (data.results && data.results.length > 0) {
+//                     setAddress(data.results[0].formatted_address);
+//                 } else {
+//                     setAddress('Address not found');
+//                 }
+//             } catch (error) {
+//                 console.error(error);
+//                 setAddress('Error retrieving address');
+//             }
+//         };
+    
+//         useEffect(() => {
+//             geocodeAddress(31.808294, 35.222615);
+//         }, []);
+    
+//         return (
+//             <p>{address}</p>
+//         );
+//     };
+    
+//     export default LocationComponent;

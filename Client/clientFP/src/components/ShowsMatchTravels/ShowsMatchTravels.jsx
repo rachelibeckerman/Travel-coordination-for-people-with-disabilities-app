@@ -10,14 +10,11 @@ const URL = 'http://localhost:8080';
 
 function ShowsMatchTravels(props) {
 
-    let {originTravel ,socket,callback} = props;
-
+    let {originTravel,hideSidebar ,socket,callback} = props;
+    if(originTravel!=null){
     const [matchTravels, setMatchTravels] = useState([])
     
     let keyCounter = 0;
-
-    console.log("in ShowsMatchTravels component")
-    console.log("baseTravel= " + JSON.stringify(originTravel))
 
     let location = {
         latStart: originTravel.latStart,
@@ -31,13 +28,10 @@ function ShowsMatchTravels(props) {
     useEffect(() => {
         console.log("in ShowsMatchTravels useefect")
         async function fetchData() {
-            console.log("uurrll "+location)
             const response = await get(`${URL}/travels/closestTravels/${location}`);
-            console.log(response)
             setMatchTravels(response.data)
         }
         try {
-            
             fetchData()
         }
         catch (err) {
@@ -46,25 +40,6 @@ function ShowsMatchTravels(props) {
 
     }, [])
 
-
-    // const geocodeAddress = async (latitude, longitude) => {
-    //                 try {
-    //                     const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyAX67Cc08cXAvSkSC4nGEs3BfEVMiK8Muc`);
-    //                     const data = await response.json();
-    //                     if (data.results && data.results.length > 0) {
-    //                         console.log("data.results[0].formatted_address "+data.results[0].formatted_address)
-    //                        return data.results[0].formatted_address
-    //                         // console.log("address "+address)
-    //                         // setAddress(data.results[0].formatted_address);
-    //                     } else {
-    //                         throw("'Address not found'")
-    //                         // setAddress('Address not found');
-    //                     }
-    //                 } catch (error) {
-    //                     console.error(error);
-    //                     setAddress('Error retrieving address');
-    //                 }
-    //             };
 
     const header = () => {
         return (
@@ -89,23 +64,18 @@ function ShowsMatchTravels(props) {
                 console.log("travel_confirmed", originTravel);
                 callback(originTravel)
             })
+            hideSidebar()
         }
         catch(err){
+           
             console.log(`ERROR ${err}`);
         }
-       //       
-        return
     }
 
     const listTemplate = (travel) => {
-        console.log("✌✌✌travel "+travel)
         keyCounter++;
         return (
             <div className="matchTravel">
-                {/* {console.log("travel " + JSON.stringify(travel))}
-                 {console.log("geocodeAddress  "+geocodeAddress(travel.startPoint.x,travel.startPoint.y).then((result) => {console.log(result);}))} 
-                 <h1> {console.log(geocodeAddress(travel.startPoint.x,travel.startPoint.y).then((result) => {return(<h1>{result}</h1>)}))} - {console.log(geocodeAddress(travel.destinationPoint.x,travel.destinationPoint.y).then((result) => {return(<h1>{result}</h1>)}))}</h1> */}
-
                 <div>Tryout starts at: {travel.date}</div>
                 <div>Amount of additional places: {travel.additionalSeats}</div>
                 <button onClick={()=>SendJoinReqForDriver(travel.id)}>Send join request for driver</button>
@@ -119,38 +89,7 @@ function ShowsMatchTravels(props) {
         </>
     );
 }
+   
+}
 
 export default ShowsMatchTravels;
-
-
-
-//  import React, { useState, useEffect } from 'react';
-
-//     const LocationComponent = () => {
-//         const [address, setAddress] = useState('');
-    
-//         const geocodeAddress = async (latitude, longitude) => {
-//             try {
-//                 const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyAX67Cc08cXAvSkSC4nGEs3BfEVMiK8Muc`);
-//                 const data = await response.json();
-//                 if (data.results && data.results.length > 0) {
-//                     setAddress(data.results[0].formatted_address);
-//                 } else {
-//                     setAddress('Address not found');
-//                 }
-//             } catch (error) {
-//                 console.error(error);
-//                 setAddress('Error retrieving address');
-//             }
-//         };
-    
-//         useEffect(() => {
-//             geocodeAddress(31.808294, 35.222615);
-//         }, []);
-    
-//         return (
-//             <p>{address}</p>
-//         );
-//     };
-    
-//     export default LocationComponent;

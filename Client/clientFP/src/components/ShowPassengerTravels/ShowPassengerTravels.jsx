@@ -13,7 +13,7 @@ import './ShowPassengerTravels.css'
 
 const URL = 'http://localhost:8080';
 
-function ShowPassengerTravels({ travels, geocodeAddress }) {
+function ShowPassengerTravels({ travels, geocodeAddress, socket }) {
     const [communications, setCommunications] = useState([]);
     const [singleTravels, setSingleTravels] = useState([]);
     const [editTravels, seteditTravelsView] = useState(null)
@@ -31,55 +31,41 @@ function ShowPassengerTravels({ travels, geocodeAddress }) {
         let tempSingleTravels = [];
 
         try {
+
             for (let i = 0; i < travels.length; i++) {
                 if (travels[i].userType == 'passenger') {
                     let fullURL = `${URL}/communications/?travelPassengerId=${travels[i].id}`;
-                    console.log("fullURL", fullURL);
                     const response = await get(fullURL);
                     const communicationsData = response.data
-                    console.log("response1==  " + response)
                     if (communicationsData.length != 0) {
                         tempCommunications = tempCommunications.concat(communicationsData);
-
                     }
                     else {
                         tempSingleTravels = tempSingleTravels.concat([travels[i]]);
                     }
                 }
-                for (let i = 0; i < tempCommunications.length; i++) {
-                    const [passengerStart, passengerDestination] = await geocodeAddress(tempCommunications[i].passengerTravel.startPoint, tempCommunications[i].passengerTravel.destinationPoint);
-                    const [driverStart, driverDestination] = await geocodeAddress(tempCommunications[i].driverTravel.startPoint, tempCommunications[i].driverTravel.destinationPoint);
-                    tempCommunications[i].passengerTravel = { ...tempCommunications[i].passengerTravel, startLocationTxt: passengerStart, destinationLocationTxt: passengerDestination };
-                    tempCommunications[i].driverTravel = { ...tempCommunications[i].driverTravel, startLocationTxt: driverStart, destinationLocationTxt: driverDestination };
-                }
-                for (let i = 0; i < tempSingleTravels.length; i++) {
-                    const [Start, Destination] = await geocodeAddress(tempSingleTravels[i].startPoint, tempSingleTravels[i].destinationPoint);
-                    tempSingleTravels[i] = { ...tempSingleTravels[i], startLocationTxt: Start, destinationLocationTxt: Destination };
-                }
-                setCommunications(tempCommunications)
-                setSingleTravels(tempSingleTravels)
+                
             }
+            for (let i = 0; i < tempCommunications.length; i++) {
+                const [passengerStart, passengerDestination] = await geocodeAddress(tempCommunications[i].passengerTravel.startPoint, tempCommunications[i].passengerTravel.destinationPoint);
+                const [driverStart, driverDestination] = await geocodeAddress(tempCommunications[i].driverTravel.startPoint, tempCommunications[i].driverTravel.destinationPoint);
+                tempCommunications[i].passengerTravel = { ...tempCommunications[i].passengerTravel, startLocationTxt: passengerStart, destinationLocationTxt: passengerDestination };
+                tempCommunications[i].driverTravel = { ...tempCommunications[i].driverTravel, startLocationTxt: driverStart, destinationLocationTxt: driverDestination };
+            }
+            for (let i = 0; i < tempSingleTravels.length; i++) {
+                const [Start, Destination] = await geocodeAddress(tempSingleTravels[i].startPoint, tempSingleTravels[i].destinationPoint);
+                tempSingleTravels[i] = { ...tempSingleTravels[i], startLocationTxt: Start, destinationLocationTxt: Destination };
+            }
+            setCommunications(tempCommunications)
+            setSingleTravels(tempSingleTravels)
         } catch (err) {
             console.log(`ERROR: ${err}`);
         }
     }
-    // const handleConfirm = async (communication) => {
-    //     try {
-    //         const response = await put(`${URL}/communications/${communication.id}`, JSON.stringify({ status: 2 }));
-    //         console.log("commuincation", communication)
-    //         console.log("congirim travel", { room: communication.driverTravel.id, confirmTo: communication.passengerTravel.id })
-    //         socket.emit('confirm_travel', { room: communication.driverTravel.id, confirmTo: communication.passengerTravel.id })
-    //         fetchData();
-    //         console.log(response);
-    //     } catch (err) {
-    //         console.log(`ERROR: ${err}`);
-    //     }
 
-    // }
 
     const listTemplateComm = (communication) => {
         keyCounter1++;
-        console.log("commuioncation after count", communication)
 
         return (
             <>
@@ -90,6 +76,7 @@ function ShowPassengerTravels({ travels, geocodeAddress }) {
                                 <h2>Passenger Info</h2>
                                 <h3>from: {communication.passengerTravel.startLocationTxt}</h3>
                                 <h3>to: {communication.passengerTravel.destinationLocationTxt}</h3>
+                                <h3>at: {communication.passengerTravel.date.replace('T', ' ').substring(0, communication.passengerTravel.date.indexOf('.'))}</h3>
                             </div>
 
                             {communication.status == 2 && <span className="pi pi-link" style={{ fontSize: "40px" }}></span>}
@@ -98,6 +85,7 @@ function ShowPassengerTravels({ travels, geocodeAddress }) {
                                 <h2>Driver Info</h2>
                                 <h3>from: {communication.driverTravel.startLocationTxt}</h3>
                                 <h3>to: {communication.driverTravel.destinationLocationTxt}</h3>
+                                <h3>at: {communication.driverTravel.date.replace('T', ' ').substring(0, communication.driverTravel.date.indexOf('.'))}</h3>
                             </div>
                         </div>
                     </div>
@@ -107,17 +95,6 @@ function ShowPassengerTravels({ travels, geocodeAddress }) {
     };
 
     const handleSearchTravel = (travel) => {
-
-        // let baseTravel = {
-        //     id: travel.id,
-        //     userId: id,
-        //     date: travel.date,
-        //     startPoint: { x: travel.latStart, y: travel.lngStart},
-        //     destinationPoint: { x: travel.latDestination, y: travel.lngDestination },
-        //     additionalSeats: travel.additionalSeats,
-        //     isAvailable: travel.isAvailable,
-        //     userType: travel.userType,
-        // }
         let baseTravel = {
             userId: travel.userId,
             userType: travel.userType,
@@ -130,16 +107,12 @@ function ShowPassengerTravels({ travels, geocodeAddress }) {
             isAvailable: travel.isAvailable,
             travelId: travel.id
         }
-        console.log("tttttrrrrrvvvvvlll  " + JSON.stringify(travel));
-        console.log("baseTravel😒👌😒 " + baseTravel)
         setShowsMatchTravels({ status: true, originTravel: baseTravel })
     }
 
     const listTemplateSingles = (travel) => {
         keyCounter2++;
         const [autocomplete, setAutocomplete] = useState(null);
-        // const [selectedPlace, setSelectedPlace] = useState(null);
-
         const onLoad = (autocomplete) => {
             setAutocomplete(autocomplete);
         };
@@ -156,13 +129,6 @@ function ShowPassengerTravels({ travels, geocodeAddress }) {
             }
         };
 
-        // const handleSearch = (originTravel) => {
-        //     return (<>
-        //         <Sidebar style={{ width: '500px' }} visible={true} onHide={() => setShowsMatchTravels(false)} className="w-full md:w-20rem lg:w-30rem">
-        //             <ShowsMatchTravels originTravel={originTravel}  />
-        //         </Sidebar>
-        //     </>)
-        // }
 
         return (
             <>
@@ -205,6 +171,7 @@ function ShowPassengerTravels({ travels, geocodeAddress }) {
                             <div className='travelItem'>
                                 <h3>from: {travel.startLocationTxt}</h3>
                                 <h3>to: {travel.destinationLocationTxt}</h3>
+                                <h3>at: {travel.date.replace('T', ' ').substring(0, travel.date.indexOf('.'))}</h3>
                                 <h3>Additional seats: {travel.additionalSeats}</h3>
                                 <Button icon="pi pi-trash" className="p-button-rounded p-button-danger" onClick={() => deleteTravelView(travel.id)} />
                                 <Button icon="pi pi-pencil" className="p-button-rounded p-button-info" onClick={() => seteditTravelsView(travel.id)} />
@@ -215,13 +182,12 @@ function ShowPassengerTravels({ travels, geocodeAddress }) {
             </>
         );
     };
-    console.log("showsMatchTravels.status "+showsMatchTravels.status);
     return (
         <>
             {communications.length != 0 && <DataView key={keyCounter1} value={communications} itemTemplate={listTemplateComm} />}
             {singleTravels.length != 0 && <DataView key={keyCounter2} value={singleTravels} itemTemplate={listTemplateSingles} />}
             <Sidebar style={{ width: '500px' }} visible={showsMatchTravels.status} onHide={() => setShowsMatchTravels({ status: false, originTravel: null })} className="w-full md:w-20rem lg:w-30rem">
-                <ShowsMatchTravels originTravel={showsMatchTravels.originTravel} />
+                <ShowsMatchTravels originTravel={showsMatchTravels.originTravel} hideSidebar={() => setShowsMatchTravels({ status: false, originTravel: null })} socket={socket} />
             </Sidebar>
         </>
     );

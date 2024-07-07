@@ -107,7 +107,7 @@ function Home({ socket }) {
             {activeLink == 'SearchTravel' && <TravelFrom userId={id} userType="passenger" closeModal={handleSearch} />}
 
             <Sidebar style={{ width: '500px' }} visible={showsMatchTravels} onHide={() => setShowsMatchTravels(false)} className="w-full md:w-20rem lg:w-30rem">
-                <ShowsMatchTravels originTravel={originTravel} socket={socket} />
+                <ShowsMatchTravels originTravel={originTravel} hideSidebar={() => setShowsMatchTravels(false)} socket={socket} />
             </Sidebar>
 
             {/* {activeLink == 'PersonaAccount' && <TravelFrom userId={id} userType="passenger" closeModal={handleSearch} />} */}
