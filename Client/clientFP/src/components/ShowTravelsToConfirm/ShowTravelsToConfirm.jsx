@@ -36,6 +36,7 @@ function ShowTravelsToConfirm({ travels, geocodeAddress, socket }) {
             console.log(`ERROR: ${err}`);
         }
     }
+
     const handleConfirm = async (communication) => {
         try {
             const response = await put(`${URL}/communications/${communication.id}`, JSON.stringify({ status: 2 }));
@@ -58,19 +59,21 @@ function ShowTravelsToConfirm({ travels, geocodeAddress, socket }) {
             <>
                 {
                     <div style={{ display: 'flex', alignItems: "center" }}>
-                        <div className='travelItem'>
-                            <h2>Passenger Info</h2>
-                            <h3>passengerTravel {communication.passengerTravel.id}</h3>
-                            <h3>driverTravel {communication.driverTravel.id}</h3>
-                            <h3>from: {communication.passengerTravel.startLocationTxt}</h3>
-                            <h3>to: {communication.passengerTravel.destinationLocationTxt}</h3>
-                            <Button icon="pi pi-check-square" className="p-button-rounded p-button-info" onClick={() => { handleConfirm(communication) }} />
-                        </div>
-                        <span className="pi pi-arrow-circle-right" style={{ fontSize: "40px" }}></span>
-                        <div className='travelItem'>
-                            <h2>Driver Info</h2>
-                            <h3>from: {communication.driverTravel.startLocationTxt}</h3>
-                            <h3>to: {communication.driverTravel.destinationLocationTxt}</h3>
+                        <div className='waitingTravelDiv'>
+                            <div className='travelItem'>
+                                <h2>Passenger Info</h2>
+                                <h3>passengerTravel {communication.passengerTravel.id}</h3>
+                                <h3>driverTravel {communication.driverTravel.id}</h3>
+                                <h3>from: {communication.passengerTravel.startLocationTxt}</h3>
+                                <h3>to: {communication.passengerTravel.destinationLocationTxt}</h3>
+                                <Button icon="pi pi-check-square" className="p-button-rounded p-button-info" onClick={() => { handleConfirm(communication) }} />
+                            </div>
+                            <span className="pi pi-arrow-circle-right" style={{ fontSize: "40px" }}></span>
+                            <div className='travelItem'>
+                                <h2>Driver Info</h2>
+                                <h3>from: {communication.driverTravel.startLocationTxt}</h3>
+                                <h3>to: {communication.driverTravel.destinationLocationTxt}</h3>
+                            </div>
                         </div>
                     </div>
                 }
@@ -82,11 +85,7 @@ function ShowTravelsToConfirm({ travels, geocodeAddress, socket }) {
     return (
         <>
             <DataView key={keyCounter} value={communications} itemTemplate={listTemplate} header={<h1>Waiting to confirm</h1>} />
-            {/* {communications.map(c =>
-                <div key={c.id}>
-                    <p>{JSON.stringify(c)}</p>
-                </div>
-            )} */}
+
         </>
     );
 }

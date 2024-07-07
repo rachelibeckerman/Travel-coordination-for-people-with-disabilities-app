@@ -10,7 +10,7 @@ export class LoginService {
     const queryUserExist = getByParamsQuery('passwords', params);
     const userExistRes = await executeQuery(queryUserExist, Object.values(params));
     if (userExistRes.length != 0) {
-      console.log("hhhhhhhhhhhhhhhhhh")
+      
       const queryGetUser = getByParamsQuery('users', { "username": params.username });
       const getUserRes = await executeQuery(queryGetUser, [params.username]);
       if (getUserRes.length != 0) {

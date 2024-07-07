@@ -16,21 +16,27 @@ function ShowsMatchTravels(props) {
 
         let keyCounter = 0;
 
-        // let location = {
-        //     latStart: originTravel.latStart,
-        //     lngStart: originTravel.lngStart,
-        //     latDestination: originTravel.latDestination,
-        //     lngDestination: originTravel.lngDestination
-        // }
-        // location = JSON.stringify(location)
+        let location = {
+            latStart: originTravel.latStart,
+            lngStart: originTravel.lngStart,
+            latDestination: originTravel.latDestination,
+            lngDestination: originTravel.lngDestination
+        }
+        location = JSON.stringify(location)
 
         // location = JSON.stringify(location)
 
         useEffect(() => {
             console.log("in ShowsMatchTravels useefect")
             async function fetchData() {
-                const response = await get(`${URL}/travels/closestTravels/${JSON.stringify(originTravel)}`);
-                setMatchTravels(response.data)
+               let tmp=[]
+                const response = await get(`${URL}/travels/closestTravels/${location}`);
+                tmp=response.data
+                for (let i = 0; i < tmp.length; i++) {
+                    const [start, destination] = await geocodeAddress(tmp[i].startPoint, tmp[i].destinationPoint);
+                    tmp[i] = { ...tmp[i], startLocationTxt: start, destinationLocationTxt: destination };
+                }
+                setMatchTravels(tmp)
             }
             try {
                 fetchData()
@@ -41,7 +47,23 @@ function ShowsMatchTravels(props) {
 
         }, [])
 
-
+        const geocodeAddress = async (startPoint, destinationPoint) => {
+            try {
+                // console.log("in GeocodeAddress")
+                // console.log("startPoint: "+JSON.stringify(startPoint)+"  destinationPoint: "+JSON.stringify(destinationPoint))
+                const startPointResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${startPoint.x},${startPoint.y}&language=en&key=AIzaSyAX67Cc08cXAvSkSC4nGEs3BfEVMiK8Muc`);
+                const startPointData = await startPointResponse.json();
+                const destinatioPointResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${destinationPoint.x},${destinationPoint.y}&language=en&key=AIzaSyAX67Cc08cXAvSkSC4nGEs3BfEVMiK8Muc`);
+                const destinationPointData = await destinatioPointResponse.json();
+                if (startPointData.results && startPointData.results.length > 0 && destinationPointData.results && destinationPointData.results.length > 0) {
+                    return [startPointData.results[0].formatted_address, destinationPointData.results[0].formatted_address]
+                } else {
+                    throw ("'Address not found'")
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
         const header = () => {
             return (
                 <>
@@ -77,9 +99,17 @@ function ShowsMatchTravels(props) {
             keyCounter++;
             return (
                 <div className="matchTravel">
-                    <div>Tryout starts at: {travel.date}</div>
-                    <div>Amount of additional places: {travel.additionalSeats}</div>
-                    <button onClick={() => SendJoinReqForDriver(travel.id)}>Send join request for driver</button>
+                    <div className='travelItem'>
+                        <h2>Travel Info</h2>
+                        <h3>from: {travel.startLocationTxt}</h3>
+                        <h3>to: {travel.destinationLocationTxt}</h3>
+                        <h3>at: {travel.date.replace('T', ' ').substring(0, travel.date.indexOf('.'))}</h3>
+                        <h3>Additional seats: {travel.additionalSeats}</h3>
+                        <button onClick={() => SendJoinReqForDriver(travel.id)}>Send join request for driver</button>
+                    </div>
+                    {/* <>
+                <div>Tryout starts at: {travel.date}</div>
+                <div>Amount of additional places: {travel.additionalSeats}</div></> */}
                 </div>
             );
         };
