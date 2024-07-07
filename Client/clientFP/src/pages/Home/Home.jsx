@@ -110,32 +110,6 @@ function Home({ socket }) {
                 <ShowsMatchTravels originTravel={originTravel} hideSidebar={() => setShowsMatchTravels(false)} socket={socket} />
             </Sidebar>
 
-            {/* {activeLink == 'PersonaAccount' && <TravelFrom userId={id} userType="passenger" closeModal={handleSearch} />} */}
-
-            {/* <button onClick={logOut}>Logout</button>
-            <h1>Home</h1>
-            {currentUser && console.log(currentUser)}
-            {currentUser && <h2> Hi {currentUser.firstName}</h2>}
-
-            <Button label="Add Travel" onClick={() => setVisibleAdd(true)} />
-            <Dialog header="Add travel" visible={visibleAdd} onHide={() => { if (!visibleAdd) return; setVisibleAdd(false); }} >
-                <div className="m-0">
-                    <TravelFrom userId={id} userType="driver" closeModal={handleAdd} />
-                </div>
-            </Dialog>
-
-            <Button label="Search Travel" onClick={() => setVisibleSearch(true)} />
-            <Dialog header="Search Travel" visible={visibleSearch} onHide={() => { if (!visibleSearch) return; setVisibleSearch(false); }} >
-                <div className="m-0">
-                    <TravelFrom userId={id} userType="passenger" closeModal={handleSearch} />
-                </div>
-            </Dialog>
-
-            <button onClick={() => navigate(`./personalAccount`)}>Personal Account</button>
-
-            <Sidebar style={{ width: '500px' }} visible={showsMatchTravels} onHide={() => setShowsMatchTravels(false)} className="w-full md:w-20rem lg:w-30rem">
-                <ShowsMatchTravels originTravel={originTravel} socket={socket} />
-            </Sidebar> */}
             <Outlet />
         </>
     );

@@ -10,6 +10,7 @@ async function executeQuery(query, params){
     let results;
     const connection = await mysql.createConnection({
         host: 'localhost',
+        port:3316,
         user: 'root',
         database: process.env.DB_NAME,
         password: process.env.PASSWORD

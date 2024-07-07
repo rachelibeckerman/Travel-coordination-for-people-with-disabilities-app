@@ -29,4 +29,6 @@
    opacity: 0.2;
    } */
 
-   
+   .p-sidebar .p-sidebar-header .p-sidebar-close, .p-sidebar .p-sidebar-header .p-sidebar-icon {
+    width: 50px;
+   }
