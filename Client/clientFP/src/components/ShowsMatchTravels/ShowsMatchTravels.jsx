@@ -16,18 +16,7 @@ function ShowsMatchTravels(props) {
 
         let keyCounter = 0;
 
-        // let location = {
-        //     latStart: originTravel.latStart,
-        //     lngStart: originTravel.lngStart,
-        //     latDestination: originTravel.latDestination,
-        //     lngDestination: originTravel.lngDestination
-        // }
-        // location = JSON.stringify(location)
-
-        // location = JSON.stringify(location)
-
         useEffect(() => {
-            console.log("in ShowsMatchTravels useefect")
             async function fetchData() {
                 let tmp = []
                 const response = await get(`${URL}/travels/closestTravels/${JSON.stringify(originTravel)}`);
@@ -49,8 +38,6 @@ function ShowsMatchTravels(props) {
 
         const geocodeAddress = async (startPoint, destinationPoint) => {
             try {
-                // console.log("in GeocodeAddress")
-                // console.log("startPoint: "+JSON.stringify(startPoint)+"  destinationPoint: "+JSON.stringify(destinationPoint))
                 const startPointResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${startPoint.x},${startPoint.y}&language=en&key=AIzaSyAX67Cc08cXAvSkSC4nGEs3BfEVMiK8Muc`);
                 const startPointData = await startPointResponse.json();
                 const destinatioPointResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${destinationPoint.x},${destinationPoint.y}&language=en&key=AIzaSyAX67Cc08cXAvSkSC4nGEs3BfEVMiK8Muc`);
@@ -80,7 +67,6 @@ function ShowsMatchTravels(props) {
 
             try {
                 const response = await post(`${URL}/communications`, JSON.stringify(communicationObj));
-                console.log("response communications", response)
                 console.log("passenger_join", { room: travelDriverId, msg: response.data })
                 socket.emit('passenger_join', { room: travelDriverId, msg: response.data })
                 socket.on("travel_confirmed", (originTravel) => {
@@ -107,9 +93,6 @@ function ShowsMatchTravels(props) {
                         <h3>Additional seats: {travel.additionalSeats}</h3>
                         <button onClick={() => SendJoinReqForDriver(travel.id)}>Send join request for driver</button>
                     </div>
-                    {/* <>
-                <div>Tryout starts at: {travel.date}</div>
-                <div>Amount of additional places: {travel.additionalSeats}</div></> */}
                 </div>
             );
         };

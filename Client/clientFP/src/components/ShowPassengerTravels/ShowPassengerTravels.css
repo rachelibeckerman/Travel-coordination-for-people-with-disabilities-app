@@ -1,4 +1,5 @@
 .confirmedTravelDiv {
+    width: -webkit-fill-available;
     border: 2px green solid;
     background: linear-gradient(135deg, #f5faf6, #c3e2ca);
     border-radius: 12px;
@@ -11,6 +12,7 @@
     place-items: center;
 }
 .waitingTravelDiv {
+    width: -webkit-fill-available;
     border: 2px rgb(128, 109, 0) solid;
     background: linear-gradient(135deg, #f5faf6, #e2dfc3);
     border-radius: 12px;
@@ -37,6 +39,4 @@
     margin: 20px ;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     margin: 10px;
-    /* display: flex; */
-    /* place-items: center; */
 }

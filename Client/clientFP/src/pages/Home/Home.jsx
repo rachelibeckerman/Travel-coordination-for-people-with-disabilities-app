@@ -24,31 +24,13 @@ function Home({ socket }) {
     const [showsMatchTravels, setShowsMatchTravels] = useState(false);
     const [travelsToConfirm, setTravelsToConfirm] = useState([])
     const { id } = useParams();
-    // const [visibleAdd, setVisibleAdd] = useState(false);
-    const [visibleSearch, setVisibleSearch] = useState(false);
     const [activeLink, setActiveLink] = useState('home');
 
     const handleNavClick = (componentName) => {
         setActiveLink(componentName);
     };
 
-    // const renderSelectedComponent = () => {
-    //     switch (activeLink) {
-    //         case 'home':
-    //             return (
-    //                 <div className='homeDiv'>
-    //                     <h1 className='enterTitle'>hello {currentUser.username}</h1>
-    //                 </div>
-    //             )
-    //         case 'AddTravel':
-    //             return;
-    //         case 'SearchTravel':
-    //             return;
-    //         case 'PersonaAccount':
-    //             return (<>aboutUs</>);
-
-    //     }
-    // };
+   
     const toast = useRef(null);
 
     const logOut = () => {
@@ -63,20 +45,6 @@ function Home({ socket }) {
 
     }
 
-    // useEffect(() => {
-    //     const userLs = JSON.parse(localStorage.getItem("currentUser"));
-    //     if (id == userLs.id) {
-    //         response = get('')
-    //         fetch(`${URL}/users/${id}`)
-    //             .then((res) => res.json())
-    //             .then((data) => { setUser(data); console.log(data) });
-    //     }
-    //     else{
-    //         navigate('/404')
-    //     }
-    // }, []);
-
-
     const handleSearch = (params) => {
         console.log("params---------- " + JSON.stringify(params))
         setActiveLink("home")
@@ -84,7 +52,6 @@ function Home({ socket }) {
         setShowsMatchTravels(true)
     }
     const handleAdd = (params) => {
-        // setVisibleAdd(false);
         setActiveLink("home")
         console.log("join_room join_room", { room: params.travelId })
         socket.emit('join_room', { room: params.travelId });

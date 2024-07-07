@@ -23,9 +23,7 @@
     background-color: #d41111;
   }
   
-  /* .content {
-    padding: 1rem;
-  } */
+  
   a{
     display: flex;
     flex-direction: column;
@@ -44,42 +42,6 @@
    } 
   
 
-/* 
-   .homeImg{
-    width: 100vw;
-    height: 100vh;
-
-    max-width: 500px;
-  max-height: 300px;
-  object-fit: contain;
-   } */
-
-   /* body{
-    background-image:url("../../IMG/4.jpg");
-    
-    background-color: rgba(0, 0, 0, 0.1);
-    background-repeat: repeat-y; /* חזור על התמונה אנכית */
-    /* background-position: center top; /* מיקום התמונה במרכז למעלה */
-   /* background-size: cover; /* כסה את כל שטח האלמנט תוך שמירה על פרופורציות */
-   /* background-attachment: fixed; /* תמונת הרקע תישאר במקומה בעת גלילה */
-   /* }  */
-
-  /* .homeDiv{
-    position: relative;
-    
-    display: flex;
-  flex-direction: column;
-  align-items: center;
-    
-    width:100vw;
-    height: 94vh;
-    /* background-image:url("../../IMG/4.jpg"); */
-    /* background-color: rgba(0, 0, 0, 0.1); */
-    /* background-repeat: repeat-y; 
-    background-position: center top; 
-    background-size: cover; 
-    background-attachment: fixed; 
-  } */ 
 
   .enterTitle{
     color: #534030;
@@ -107,12 +69,19 @@
   }
   body{
     background-image:url("../../IMG/4.jpg");
-    background-repeat: repeat-y; /* חזור על התמונה אנכית */
-    background-position: center top; /* מיקום התמונה במרכז למעלה */
-    background-size: cover; /* כסה את כל שטח האלמנט תוך שמירה על פרופורציות */
-    background-attachment: fixed; /* תמונת הרקע תישאר במקומה בעת גלילה */ 
-    background-repeat: repeat-y; /* חזור על התמונה אנכית */
-    background-position: center top; /* מיקום התמונה במרכז למעלה */
-    background-size: cover; /* כסה את כל שטח האלמנט תוך שמירה על פרופורציות */
-    background-attachment: fixed; /* תמונת הרקע תישאר במקומה בעת גלילה */
+    background-repeat: repeat-y;
+    background-position: center top; 
+    background-size: cover; 
+    background-attachment: fixed;
+    background-repeat: repeat-y; 
+    background-position: center top; 
+    background-size: cover; 
+    background-attachment: fixed; 
+  }
+
+  .AboutUs{
+    background-color: #f0f0f0a6;
+    padding: 50px;
+    border-radius: 50px;
+    font-size:30px;
   }

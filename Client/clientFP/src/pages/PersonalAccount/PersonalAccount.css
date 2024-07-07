@@ -1,4 +1,5 @@
 .travelItem {
+    width: -webkit-fill-available;
     background: linear-gradient(135deg, #f5f7fa, #ffffff);
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -40,9 +41,7 @@
 }
 
 .p-button-info {
-    /* background-color: #007bff; */
     border: solid 2px #007bff;
-    /* border: none; */
 }
 
 .p-button-info:hover {
@@ -51,9 +50,7 @@
 }
 
 .p-button-danger {
-    /* background-color: #dc3545; */
     border: solid 2px #dc3545;
-    /* border: none; */
 }
 
 .p-button-danger:hover {
@@ -62,17 +59,14 @@
 }
 
 .p-button-search {
-    /* background-color: #dc3545; */
-    border: solid 2px #dcd135;
-    /* border: none; */
+    border: solid 2px rgba(98, 159, 240, 0.729);
 }
 
 .p-button-search:hover {
-    background-color: rgba(240, 233, 98, 0.729);
-    border: solid 2px #dcd135;
+    background-color: rgba(98, 159, 240, 0.729);
+    border: solid 2px #3591dc;
 }
 
 .navbar-personal-account {
-    /* border-top: #007bff 2px solid; */
     margin-top: 55px;
 }

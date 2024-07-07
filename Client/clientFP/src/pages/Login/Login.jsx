@@ -32,19 +32,14 @@ function Login() {
     const loginRequest = async (body) => {
         try {
             body.password = sha256(body.password);
-            console.log(body)
             const response = await post(`${URL}/login`, JSON.stringify(body));
-            console.log("token: " + JSON.stringify(response.data))
             if (response == undefined)
                 alert("First time we meet? Sign up")
             else {
                 const accessToken = response.data.accessToken;
-                console.log("accessToken: " + accessToken);
                 const cookies = new Cookies();
                 cookies.set('accessToken', accessToken, { path: '/' });
-                //console.log(response.data[0])
                 setCurrentUser(response.data.user);
-                // localStorage.setItem("currentUser", JSON.stringify({ username: data.user.username, id: data.user.id }))
                 navigate(`/user/${response.data.user.id}`);
             }
         } catch (err) {

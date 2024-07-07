@@ -8,7 +8,6 @@ import { get,put } from "../../components/GeneralRequest"
 import { LoadScript, Autocomplete } from '@react-google-maps/api';
 import { Sidebar } from 'primereact/sidebar';
 import ShowsMatchTravels from '../ShowsMatchTravels/ShowsMatchTravels.jsx';
-// import './ShowPassengerTravels.css'
 
 
 const URL = 'http://localhost:8080';
@@ -16,8 +15,6 @@ const URL = 'http://localhost:8080';
 function ShowDriverTravels({ travels, geocodeAddress,socket }) {
     const [communications, setCommunications] = useState([]);
     const [singleTravels, setSingleTravels] = useState([]);
-    const [editTravels, seteditTravelsView] = useState(null)
-    const [showsMatchTravels, setShowsMatchTravels] = useState([false, null])
     const { id } = useParams();
     let keyCounter1 = 0;
     let keyCounter2 = 0;
@@ -34,10 +31,8 @@ function ShowDriverTravels({ travels, geocodeAddress,socket }) {
             for (let i = 0; i < travels.length; i++) {
                 if (travels[i].userType == 'driver') {
                     let fullURL = `${URL}/communications/?travelDriverId=${travels[i].id}`;
-                    console.log("fullURL", fullURL);
                     const response = await get(fullURL);
                     const communicationsData = response.data
-                    console.log("response1==  " + response)
                     if (communicationsData.length != 0) {
                         tempCommunications = tempCommunications.concat(communicationsData);
 
@@ -129,47 +124,11 @@ function ShowDriverTravels({ travels, geocodeAddress,socket }) {
             <>
                 <div className='singleTravelDiv'>
                     {
-
-                        editTravels == travel.id ?
-                            <div className='travelItem'>
-                                <div>
-                                    <h3>from</h3>
-                                    <LoadScript libraries={["places"]} googleMapsApiKey='AIzaSyAX67Cc08cXAvSkSC4nGEs3BfEVMiK8Muc'>
-                                        <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
-                                            <InputText
-                                                type="text"
-                                                defaultValue={travel.startLocationTxt}
-                                                placeholder="Enter a location"
-                                                style={{ width: '300px' }}
-                                            />
-                                        </Autocomplete>
-                                    </LoadScript>
-                                </div>
-                                <div>
-                                    <h3>to</h3>
-                                    <LoadScript libraries={["places"]} googleMapsApiKey='AIzaSyAX67Cc08cXAvSkSC4nGEs3BfEVMiK8Muc'>
-                                        <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
-                                            <InputText
-                                                type="text"
-                                                defaultValue={travel.destinationLocationTxt}
-                                                placeholder="Enter a location"
-                                                style={{ width: '300px' }}
-                                            />
-                                        </Autocomplete>
-                                    </LoadScript>
-                                </div>
-                                <InputText type="text" defaultValue={travel.additionalSeats} />
-                                <Button label='update' className="p-button-rounded p-button-danger" onClick={() => (travel.id)} />
-                                <Button label='cancel' className="p-button-rounded p-button-danger" onClick={() => seteditTravelsView(null)} />
-                            </div>
-                            :
                             <div className='travelItem'>
                                 <h3>from: {travel.startLocationTxt}</h3>
                                 <h3>to: {travel.destinationLocationTxt}</h3>
                                 <h3>at: {travel.date.replace('T', ' ').substring(0, travel.date.indexOf('.'))}</h3>
                                 <h3>Additional seats: {travel.additionalSeats}</h3>
-                                <Button icon="pi pi-trash" className="p-button-rounded p-button-danger" onClick={() => deleteTravelView(travel.id)} />
-                                <Button icon="pi pi-pencil" className="p-button-rounded p-button-info" onClick={() => seteditTravelsView(travel.id)} />
                             </div>
                     }
                 </div>
@@ -179,7 +138,7 @@ function ShowDriverTravels({ travels, geocodeAddress,socket }) {
 
     return (
         <>
-            {communications.length != 0 && <DataView key={keyCounter1} value={communications} itemTemplate={listTemplateComm} />}
+            {communications.length != 0?<DataView key={keyCounter1} value={communications} itemTemplate={listTemplateComm} />:<div><h2>loading</h2><i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem' }}></i></div>}
             {singleTravels.length != 0 && <DataView key={keyCounter2} value={singleTravels} itemTemplate={listTemplateSingles} />}
         </>
     );

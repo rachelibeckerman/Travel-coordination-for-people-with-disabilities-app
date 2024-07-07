@@ -10,7 +10,6 @@ function ShowTravelsToConfirm({ travels, geocodeAddress, socket }) {
     const [communications, setCommunications] = useState([]);
     const { id } = useParams();
     let keyCounter = 0;
-    console.log(communications);
     useEffect(() => {
         fetchData();
     }, [])
@@ -21,7 +20,6 @@ function ShowTravelsToConfirm({ travels, geocodeAddress, socket }) {
         try {
             for (let i = 0; i < travels.length; i++) {
                 let fullURL = `${URL}/communications/?travelDriverId=${travels[i].id}&status=1`;
-                console.log("fullURL", fullURL);
                 const response = await get(fullURL);
                 for (let i = 0; i < response.data.length; i++) {
                     const [passengerStart, passengerDestination] = await geocodeAddress(response.data[i].passengerTravel.startPoint, response.data[i].passengerTravel.destinationPoint);
@@ -40,7 +38,6 @@ function ShowTravelsToConfirm({ travels, geocodeAddress, socket }) {
     const handleConfirm = async (communication) => {
         try {
             const response = await put(`${URL}/communications/${communication.id}`, JSON.stringify({ status: 2 }));
-            console.log("commuincation", communication)
             console.log("congirim travel", { room: communication.driverTravel.id, confirmTo: communication.passengerTravel.id })
             socket.emit('confirm_travel', { room: communication.driverTravel.id, confirmTo: communication.passengerTravel.id })
             fetchData();
@@ -53,7 +50,6 @@ function ShowTravelsToConfirm({ travels, geocodeAddress, socket }) {
 
     const listTemplate = (communication) => {
         keyCounter++;
-        console.log("commuioncation after count", communication)
 
         return (
             <>
@@ -84,7 +80,7 @@ function ShowTravelsToConfirm({ travels, geocodeAddress, socket }) {
 
     return (
         <>
-            <DataView key={keyCounter} value={communications} itemTemplate={listTemplate} header={<h1>Waiting to confirm</h1>} />
+           {communications.length>0? <DataView key={keyCounter} value={communications} itemTemplate={listTemplate}  />:<div><h2>loading</h2><i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem' }}></i></div>}
 
         </>
     );

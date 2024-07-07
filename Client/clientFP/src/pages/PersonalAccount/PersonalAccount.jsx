@@ -10,7 +10,6 @@ import { get } from "../../components/GeneralRequest"
 import { LoadScript, Autocomplete } from '@react-google-maps/api';
 import { Menubar } from 'primereact/menubar';
 import ShowTravelsToConfirm from '../../components/ShowTravelsToConfirm/ShowTravelsToConfirm'
-import ShowTravelCommunications from '../../components/ShowTravelsCommunications/ShowTravelsCommunications'
 import ShowPassengerTravels from '../../components/ShowPassengerTravels/ShowPassengerTravels';
 import ShowDriverTravels from '../../components/showDriverTravels/showDriverTravels'
 import 'primeicons/primeicons.css';
@@ -22,8 +21,6 @@ const URL = 'http://localhost:8080';
 function PersonalAccount({ socket }) {
   const { id } = useParams();
   const [userTravels, setUserTravels] = useState([])
-  // const [editTravels, seteditTravelsView] = useState(null)
-  // const [updateTravelObj, setUpdateTravelObj] = useState({})
   const [show, setShow] = useState(false)
   
 
