@@ -1,2 +1,2 @@
 # FinalProject
-client-server -react-node-mySql -- Adina&amp;Rachel
+client-server -react-node-mySql -- 
