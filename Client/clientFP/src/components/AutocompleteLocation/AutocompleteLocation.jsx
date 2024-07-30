@@ -20,7 +20,7 @@ const AutocompleteLocation = ({placeholder,value,name,onChange,getGeoCode}) => {
     };
 
     return (
-        <LoadScript libraries={["places"]} googleMapsApiKey='AIzaSyAX67Cc08cXAvSkSC4nGEs3BfEVMiK8Muc'>
+        <LoadScript libraries={["places"]} googleMapsApiKey='API_KEY'>
             <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
                 <InputText
                     type="text"
