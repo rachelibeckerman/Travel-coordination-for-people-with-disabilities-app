@@ -38,9 +38,9 @@ function ShowsMatchTravels(props) {
 
         const geocodeAddress = async (startPoint, destinationPoint) => {
             try {
-                const startPointResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${startPoint.x},${startPoint.y}&language=en&key=AIzaSyAX67Cc08cXAvSkSC4nGEs3BfEVMiK8Muc`);
+                const startPointResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${startPoint.x},${startPoint.y}&language=en&key=API_KEY`);
                 const startPointData = await startPointResponse.json();
-                const destinatioPointResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${destinationPoint.x},${destinationPoint.y}&language=en&key=AIzaSyAX67Cc08cXAvSkSC4nGEs3BfEVMiK8Muc`);
+                const destinatioPointResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${destinationPoint.x},${destinationPoint.y}&language=en&key=API_KEY`);
                 const destinationPointData = await destinatioPointResponse.json();
                 if (startPointData.results && startPointData.results.length > 0 && destinationPointData.results && destinationPointData.results.length > 0) {
                     return [startPointData.results[0].formatted_address, destinationPointData.results[0].formatted_address]
